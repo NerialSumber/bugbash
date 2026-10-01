@@ -43,16 +43,9 @@ export default function HomePage() {
 
       <div className="mt-6 flex flex-wrap gap-2">
         <a
-          href="/bugbash-site.zip"
-          download="bugbash-site.zip"
-          className={buttonVariants({ size: "lg" })}
-        >
-          Baixar código (ZIP)
-        </a>
-        <a
           href="/pdfs/bugbash-completo.pdf"
           download="Bug-Bash-Prontera-Completo.pdf"
-          className={buttonVariants({ variant: "outline", size: "lg" })}
+          className={buttonVariants({ size: "lg" })}
         >
           Baixar PDF completo
         </a>
