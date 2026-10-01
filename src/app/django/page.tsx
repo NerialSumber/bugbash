@@ -34,12 +34,6 @@ export default function DjangoPage() {
           É o guia de <strong>preparação</strong>. O site público lê tudo daqui.
           Quem for só testar a navegação pode pular para o roteiro do site.
         </p>
-        <Callout tone="warn" title="Use o admin de staging">
-          O site que o grupo abre lê este admin. O admin de production
-          (prontera-production) ainda tem Parceiros, Juliana e o evento “teste
-          cafe”, mas esses dados não aparecem no site. Não crie o Bug Bash
-          lá. Não desmarque “Pública” / “Ativa” em massa.
-        </Callout>
         <div className="overflow-x-auto rounded-xl bg-white text-sm ring-1 ring-foreground/10">
           <table className="w-full text-left">
             <thead className="bg-muted/70 text-xs tracking-wide uppercase">
@@ -467,11 +461,6 @@ export default function DjangoPage() {
           alt="Tela Sessão encerrada do Django"
           caption="Logout concluído."
         />
-        <Callout tone="ok" title="Pronto para o site">
-          Libere o roteiro do site só com as três pessoas BUGBASH-, o evento
-          {` ${PREP_EVENT.title} `}publicado, a sala {PREP_ROOM.id} pública e o
-          formulário {PREP_FORM.slug} publicado.
-        </Callout>
       </Step>
     </GuideShell>
   );
