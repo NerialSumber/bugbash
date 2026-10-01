@@ -128,8 +128,7 @@ export default function HomePage() {
             <Link href="/site" className="font-medium text-primary underline">
               roteiro do site
             </Link>{" "}
-            e marca os checkboxes conforme testa. A folha de resposta usa os
-            mesmos quadradinhos dos passos.
+            e marca o quadradinho de cada passo conforme testa.
           </li>
           <li>
             Achou um bug? Abra o{" "}

@@ -4,7 +4,6 @@ import { GuideShell } from "@/components/guide-shell";
 import { Shot } from "@/components/shot";
 import { Step } from "@/components/step";
 import { buttonVariants } from "@/components/ui/button";
-import { CheckItem } from "@/components/check-item";
 import {
   ADMIN_URL,
   PREP_EVENT,
@@ -27,7 +26,6 @@ const toc = [
   { id: "contato", label: "6. Contato" },
   { id: "rotas", label: "7. Rotas e 404" },
   { id: "mobile", label: "8. Celular" },
-  { id: "folha", label: "Folha de resposta" },
 ];
 
 export default function SitePage() {
@@ -547,57 +545,6 @@ export default function SitePage() {
           <Shot src="/shots/mobile/contato.png" alt="Contato no celular" caption="Contato" />
         </div>
       </Step>
-
-      <section id="folha" className="print-break space-y-4 py-8">
-        <h2 className="font-display text-3xl text-primary">Folha de resposta</h2>
-        <p className="text-sm text-muted-foreground">
-          Use esta lista só para acompanhar o que já testou. Os bugs em si
-          entram no formulário — um registro sem URL não dá para reproduzir.
-        </p>
-        <a
-          href={REPORT_FORM_URL}
-          target="_blank"
-          rel="noreferrer"
-          className={buttonVariants()}
-        >
-          Reportar bug no formulário
-        </a>
-        <div className="rounded-2xl bg-white p-5 text-sm ring-1 ring-foreground/10">
-          <p>Tester: __________________ Navegador: __________________ Data: ________</p>
-          <ul className="mt-4 space-y-2">
-            {[
-              ["site:nav", "Navegação (menu / rodapé / URL)"],
-              ["site:home", "Home / hashes / bolhas / CTAs"],
-              ["site:rede", "Rede — lista, busca, perfil, sem foto, oculta"],
-              ["site:eventos", "Eventos — calendário, lista, detalhe, slug"],
-              ["site:salas", "Salas — cards, adicionais, Reservar"],
-              ["site:contato", "Contato — validação e envio"],
-              ["site:rotas", "Rotas / 404"],
-              ["site:mobile", "Mobile"],
-            ].map(([key, label]) => (
-              <li key={key} className="flex gap-2">
-                <CheckItem storageKey={key} />
-                <span>
-                  {label} — ok / bugs: _______________________________
-                </span>
-              </li>
-            ))}
-          </ul>
-          <p className="mt-6 font-semibold">Bugs encontrados</p>
-          <p className="mt-1 text-muted-foreground">
-            Não escreva o bug só aqui. Abra o{" "}
-            <a
-              href={REPORT_FORM_URL}
-              className="font-medium text-primary underline"
-              target="_blank"
-              rel="noreferrer"
-            >
-              formulário de report
-            </a>{" "}
-            e envie um registro por problema.
-          </p>
-        </div>
-      </section>
     </GuideShell>
   );
 }
