@@ -2,7 +2,30 @@ import Link from "next/link";
 import { buttonVariants } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { REPORT_FORM_URL } from "@/lib/links";
+import { ADMIN_URL, REPORT_FORM_URL, SITE_ALIAS_URL, SITE_URL } from "@/lib/links";
+
+const VIDEOS = [
+  {
+    src: "/videos/docs-home.mp4",
+    title: "Onde estão os roteiros",
+    caption: "Capa, URLs de staging e a tabela do que precisa existir antes do teste.",
+  },
+  {
+    src: "/videos/preparo-admin.mp4",
+    title: "Preparo no admin",
+    caption: "Pessoas BUGBASH-, workshop publicado, sala com adicional e o formulário fale-conosco.",
+  },
+  {
+    src: "/videos/caminho-comum.mp4",
+    title: "Caminho comum no site",
+    caption: "Home, perfil da pessoa completa, sala com Cadeiras e Day use, mensagem enviada.",
+  },
+  {
+    src: "/videos/simulacao-bug-eventos.mp4",
+    title: "Simulação: reportar o bug de Eventos",
+    caption: "A lista não carrega. O report vai no formulário, com URL, o que foi feito, o esperado e o que aconteceu.",
+  },
+] as const;
 
 export default function HomePage() {
   return (
@@ -14,10 +37,26 @@ export default function HomePage() {
         Roteiros do Bug Bash
       </h1>
       <p className="mt-4 max-w-2xl text-base leading-relaxed text-muted-foreground sm:text-lg">
-        Dois manuais com prints reais das telas. Use o do Django para preparar
-        os dados. Use o do site para testar como visitante. Há um PDF único
-        com as três páginas, logo abaixo.
+        Dois manuais com prints reais das telas. O do Django é o passo anterior:
+        ele cria os dados do Bug Bash. O do site só começa depois disso.
       </p>
+
+      <div className="mt-6 flex flex-wrap gap-2">
+        <a
+          href="/bugbash-site.zip"
+          download="bugbash-site.zip"
+          className={buttonVariants({ size: "lg" })}
+        >
+          Baixar código (ZIP)
+        </a>
+        <a
+          href="/pdfs/bugbash-completo.pdf"
+          download="Bug-Bash-Prontera-Completo.pdf"
+          className={buttonVariants({ variant: "outline", size: "lg" })}
+        >
+          Baixar PDF completo
+        </a>
+      </div>
 
       <div className="mt-8 grid gap-4 sm:grid-cols-2">
         <Card>
@@ -75,20 +114,22 @@ export default function HomePage() {
         <h2 className="font-display text-3xl text-primary">Como usar no dia</h2>
         <ol className="list-decimal space-y-2 pl-5 text-[15px] leading-relaxed">
           <li>
-            Uma pessoa (ou dupla) segue o{" "}
+            Uma pessoa segue o{" "}
             <Link href="/django" className="font-medium text-primary underline">
               roteiro Django
             </Link>{" "}
-            e deixa os dados prontos. Prefira criar itens com o prefixo{" "}
-            <code className="rounded bg-muted px-1">BUGBASH-</code> em vez de
-            apagar o que já existe.
+            no admin de staging e cria as pessoas, o evento, a sala e o
+            formulário com o prefixo{" "}
+            <code className="rounded bg-muted px-1">BUGBASH-</code>. Esse passo
+            termina antes de qualquer teste no site.
           </li>
           <li>
             O restante do grupo abre o{" "}
             <Link href="/site" className="font-medium text-primary underline">
               roteiro do site
             </Link>{" "}
-            e marca os checkboxes conforme testa.
+            e marca os checkboxes conforme testa. A folha de resposta usa os
+            mesmos quadradinhos dos passos.
           </li>
           <li>
             Achou um bug? Abra o{" "}
@@ -105,10 +146,38 @@ export default function HomePage() {
         </ol>
       </section>
 
+      <section className="no-print mt-10 space-y-4">
+        <h2 className="font-display text-3xl text-primary">Vídeos</h2>
+        <p className="max-w-2xl text-sm leading-relaxed text-muted-foreground">
+          Quatro gravações curtas do fluxo combinado: onde estão os roteiros, o
+          preparo no admin de staging, o caminho comum no site e o report do
+          bug real de Eventos.
+        </p>
+        <div className="grid gap-4 sm:grid-cols-2">
+          {VIDEOS.map((video) => (
+            <figure
+              key={video.src}
+              className="overflow-hidden rounded-2xl bg-white ring-1 ring-foreground/10"
+            >
+              <video
+                className="aspect-video w-full bg-black"
+                controls
+                preload="metadata"
+                src={video.src}
+              />
+              <figcaption className="space-y-1 px-4 py-3">
+                <p className="font-medium text-primary">{video.title}</p>
+                <p className="text-sm text-muted-foreground">{video.caption}</p>
+              </figcaption>
+            </figure>
+          ))}
+        </div>
+      </section>
+
       <section className="mt-10 rounded-2xl bg-white p-5 ring-1 ring-foreground/10">
         <h2 className="font-display text-2xl text-primary">PDF único</h2>
         <p className="mt-1 text-sm text-muted-foreground">
-          Capa + roteiro Django + roteiro do site, num arquivo só (42 páginas).
+          Capa + roteiro Django + roteiro do site, num arquivo só (46 páginas).
         </p>
         <a
           href="/pdfs/bugbash-completo.pdf"
@@ -157,12 +226,15 @@ export default function HomePage() {
             <dd>
               <a
                 className="text-primary underline"
-                href="https://prontera-eight.vercel.app"
+                href={SITE_URL}
                 target="_blank"
                 rel="noreferrer"
               >
-                prontera-eight.vercel.app
+                prontera-staging.vercel.app
               </a>
+              <span className="mt-1 block text-xs text-muted-foreground">
+                {SITE_ALIAS_URL} redireciona para este endereço.
+              </span>
             </dd>
           </div>
           <div>
@@ -170,12 +242,15 @@ export default function HomePage() {
             <dd>
               <a
                 className="text-primary underline"
-                href="https://prontera-production.up.railway.app/admin/"
+                href={ADMIN_URL}
                 target="_blank"
                 rel="noreferrer"
               >
-                prontera-production.up.railway.app/admin
+                prontera-staging.up.railway.app/admin
               </a>
+              <span className="mt-1 block text-xs text-muted-foreground">
+                Não use o admin de production. Ele não alimenta este site.
+              </span>
             </dd>
           </div>
         </dl>

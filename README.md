@@ -5,6 +5,8 @@ Dois manuais passo a passo, com prints reais das telas:
 - **Admin Django** — login, mapa do painel e como criar/editar Home, pessoas, eventos e salas
 - **Site Prontera** — o que clicar no site público e o que deveria acontecer
 
+Vídeos em `public/videos/`: capa dos roteiros, preparo no admin, caminho comum no site e a simulação de report do bug de Eventos.
+
 PDFs em `public/pdfs/`:
 
 - `bugbash-completo.pdf` — capa + Django + site (arquivo único)
@@ -33,8 +35,10 @@ Ou conecte o repositório no [Vercel](https://vercel.com/new).
 
 | O quê | URL |
 | --- | --- |
-| Site | https://prontera-eight.vercel.app |
-| Admin Django | https://prontera-production.up.railway.app/admin/ |
+| Site | https://prontera-staging.vercel.app (`prontera-eight.vercel.app` redireciona para cá) |
+| Admin Django | https://prontera-staging.up.railway.app/admin/ |
+
+O admin de production não alimenta esse site. O roteiro Django é o passo anterior ao teste.
 
 Credenciais do admin estão no roteiro Django (são as combinadas para o Bug Bash).
 

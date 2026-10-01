@@ -135,6 +135,11 @@
 }
 
 @media print {
+  * {
+    print-color-adjust: exact;
+    -webkit-print-color-adjust: exact;
+  }
+
   nav,
   .no-print,
   header {

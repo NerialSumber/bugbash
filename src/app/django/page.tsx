@@ -3,6 +3,7 @@ import { DoExpect } from "@/components/expect";
 import { GuideShell } from "@/components/guide-shell";
 import { Shot } from "@/components/shot";
 import { Step } from "@/components/step";
+import { ADMIN_URL, PREP_EVENT, PREP_FORM, PREP_ROOM } from "@/lib/links";
 
 const toc = [
   { id: "regras", label: "Para quem é este doc" },
@@ -14,7 +15,7 @@ const toc = [
   { id: "rede", label: "6. Pessoas da Rede" },
   { id: "eventos", label: "7. Eventos" },
   { id: "salas", label: "8. Salas" },
-  { id: "parceiros", label: "9. Parceiros" },
+  { id: "formulario", label: "9. Formulário Fale Conosco" },
   { id: "contato", label: "10. Mensagens de contato" },
   { id: "logout", label: "11. Encerrar sessão" },
 ];
@@ -24,7 +25,7 @@ export default function DjangoPage() {
     <GuideShell
       kicker="Documento 1"
       title="Roteiro do Django"
-      intro="Use este manual para entrar no admin, entender cada bloco e preparar os dados que o site mostra. Não apague conteúdo existente sem combinarem antes — crie itens novos com o prefixo BUGBASH-."
+      intro="Este roteiro é o passo anterior ao bug bash do site. Uma pessoa entra no admin de staging, cria os cadastros BUGBASH- e só então o grupo abre o roteiro do site. Não apague o que já existe."
       toc={toc}
     >
       <section id="regras" className="mt-10 space-y-4">
@@ -33,10 +34,11 @@ export default function DjangoPage() {
           É o guia de <strong>preparação</strong>. O site público lê tudo daqui.
           Quem for só testar a navegação pode pular para o roteiro do site.
         </p>
-        <Callout tone="warn" title="Ambiente compartilhado">
-          Este admin está em produção/homologação compartilhada. Não desmarque
-          “Pública” / “Ativa” em massa. Se precisar de um caso de “não
-          público”, use um cadastro criado agora, com o prefixo BUGBASH-.
+        <Callout tone="warn" title="Use o admin de staging">
+          O site que o grupo abre lê este admin. O admin de production
+          (prontera-production) ainda tem Parceiros, Juliana e o evento “teste
+          cafe”, mas esses dados não aparecem no site. Não crie o Bug Bash
+          lá. Não desmarque “Pública” / “Ativa” em massa.
         </Callout>
         <div className="overflow-x-auto rounded-xl bg-white text-sm ring-1 ring-foreground/10">
           <table className="w-full text-left">
@@ -52,11 +54,11 @@ export default function DjangoPage() {
                 <td className="px-3 py-2">
                   <a
                     className="text-primary underline"
-                    href="https://prontera-production.up.railway.app/admin/"
+                    href={ADMIN_URL}
                     target="_blank"
                     rel="noreferrer"
                   >
-                    https://prontera-production.up.railway.app/admin/
+                    {ADMIN_URL}
                   </a>
                 </td>
               </tr>
@@ -150,8 +152,11 @@ export default function DjangoPage() {
                 <td className="px-3 py-2">Cards de Sala 1 / Sala 2, adicionais e pacotes.</td>
               </tr>
               <tr>
-                <td className="px-3 py-2 font-medium">Parceiros</td>
-                <td className="px-3 py-2">Cadastro de parceiros (ainda pouco usado no site).</td>
+                <td className="px-3 py-2 font-medium">Formulários</td>
+                <td className="px-3 py-2">
+                  Definição do Fale Conosco. Sem o slug fale-conosco publicado,
+                  a página Contato não carrega o formulário.
+                </td>
               </tr>
               <tr>
                 <td className="px-3 py-2 font-medium">Mensagens de contato</td>
@@ -267,8 +272,11 @@ export default function DjangoPage() {
 
       <Step guide="django" id="rede" n="6" title="Criar e editar pessoas da Rede">
         <p>
-          Em <strong>Pessoas → Pessoas</strong> estão os 17 cadastros atuais.
+          Em <strong>Pessoas → Pessoas</strong> a lista de staging começa vazia.
           A coluna <strong>Pública</strong> decide se a pessoa aparece na Rede.
+          Crie as três pessoas abaixo antes de liberar o roteiro do site. O
+          papel “Parceiro” continua existindo aqui — é classificação de pessoa,
+          não o menu Parceiros (esse menu não está neste admin).
         </p>
         <Shot
           src="/shots/django/list-person.png"
@@ -279,17 +287,17 @@ export default function DjangoPage() {
         <DoExpect
           doItems={[
             "Clique em Adicionar pessoa.",
-            "Nome: BUGBASH Pessoa Completa. Slug pode ficar em branco (o Django gera).",
+            "Nome: BUGBASH Pessoa Completa. Slug: bugbash-pessoa-completa.",
             "Headline: uma linha de apresentação.",
             "Foto: envie um PNG/JPG quadrado.",
             "Redes sociais: cole o JSON de exemplo abaixo.",
             "Em Classificação, escolha pelo menos 1 papel, 1 área e 1 vínculo.",
             "Marque Pública. Salve.",
-            "Crie uma segunda pessoa BUGBASH Sem Foto, pública, sem imagem.",
-            "Crie uma terceira BUGBASH Oculta e deixe Pública desmarcada.",
+            "Crie BUGBASH Sem Foto, slug bugbash-sem-foto, pública, sem imagem.",
+            "Crie BUGBASH Oculta, slug bugbash-oculta, e deixe Pública desmarcada.",
           ]}
           expectItems={[
-            "A pessoa pública aparece em /redeprontera e em /redeprontera/slug.",
+            "A pessoa pública aparece em /redeprontera e em /redeprontera/bugbash-pessoa-completa.",
             "A pessoa sem foto mostra iniciais no círculo (ex.: AG), não um ícone quebrado.",
             "A pessoa oculta não sai na lista nem na busca. A URL direta deve dizer Pessoa não encontrada.",
           ]}
@@ -303,8 +311,8 @@ export default function DjangoPage() {
         />
         <Shot
           src="/shots/django/edit-person.png"
-          alt="Edição da pessoa Juliana Negreiros com foto e Instagram"
-          caption="Exemplo real: Juliana Negreiros — foto, headline, Instagram, papéis Sócio e Equipe, flag Pública."
+          alt="Exemplo antigo de edição de pessoa com foto e Instagram"
+          caption="Print antigo (Juliana, admin de production). No staging, preencha do mesmo jeito a BUGBASH Pessoa Completa."
           tall
         />
         <p>
@@ -320,8 +328,11 @@ export default function DjangoPage() {
 
       <Step guide="django" id="eventos" n="7" title="Criar e publicar um evento">
         <p>
-          Já existe o evento <strong>teste cafe</strong>, tipo Evento promocional,
-          formato Presencial, status Publicado / Planejado, de 14 a 18 de setembro.
+          A lista de staging começa vazia. Não procure “teste cafe”: esse
+          evento está só no admin de production. Crie o{" "}
+          <strong>{PREP_EVENT.title}</strong> com slug{" "}
+          <code>{PREP_EVENT.slug}</code>, de {PREP_EVENT.start} a {PREP_EVENT.end},
+          para ele aparecer no calendário de setembro e de outubro.
         </p>
         <Shot
           src="/shots/django/list-event.png"
@@ -331,12 +342,12 @@ export default function DjangoPage() {
         <DoExpect
           doItems={[
             "Clique em Adicionar evento.",
-            "Título: BUGBASH Workshop. Tipo de evento e Formato são obrigatórios para ficar redondo no site.",
+            "Título: BUGBASH Workshop. Slug: bugbash-workshop. Tipo: Evento promocional. Formato: Presencial.",
             "Status de publicação: comece em Rascunho, salve, olhe o site (não deve aparecer). Depois mude para Publicado.",
-            "Preencha Início e Término (data + hora). O admin avisa o fuso de −3h.",
+            "Início: 30/09/2026 10:00. Término: 02/10/2026 18:00. O admin avisa o fuso de −3h.",
             "Resumo aparece no card. Descrição (Markdown) aparece na página do evento.",
             "Opcional: + Adicionar trilha / atividade no fim do form.",
-            "SALVAR e conferir no site em /eventos (calendário e Lista) e em /eventos/1 (hoje o detalhe usa o id, não o slug).",
+            "SALVAR. O evento precisa existir na lista do admin com status Publicado. No site, /eventos hoje mostra “Não foi possível carregar os eventos” mesmo com este registro publicado — isso é o bug da simulação no outro roteiro.",
           ]}
           expectItems={[
             "Rascunho não entra no calendário.",
@@ -361,16 +372,17 @@ export default function DjangoPage() {
 
       <Step guide="django" id="salas" n="8" title="Criar ou editar uma sala">
         <p>
-          Há duas salas públicas: Sala 1 (multiuso, R$ 50/h) e Sala 2 (reunião,
-          R$ 60/h). Cada uma tem adicionais e pacotes no fim do form.
+          Neste staging já existe uma sala pública, <strong>sala 1</strong>{" "}
+          (multiuso, 15 pessoas, R$ 30/hora, 08:00–20:00), sem adicionais. Não
+          edite essa sala. Crie a sala do Bug Bash ao lado dela.
         </p>
         <DoExpect
           doItems={[
-            "Abra Salas → clique em Sala 1 para ver um cadastro completo.",
-            "Para testar, crie BUGBASH Sala Teste: título, identificador (ex.: bugbash-sala), tipo, descrição, valor hora, capacidade, horários.",
-            "Marque Pública. Sem isso a sala não entra em /salas.",
-            "Em Adicionais da sala e Pacotes da sala, clique em + Adicionar outro e preencha título + identificador.",
-            "Salve e abra /salas no site. Clique em Adicionais e Pacotes.",
+            "Abra Salas e confira a sala 1 que já existe. Não mude o valor nem a capacidade.",
+            `Crie ${PREP_ROOM.title}: título, identificador ${PREP_ROOM.id}, tipo, descrição, valor hora, capacidade, horários.`,
+            "Marque Pública. Salve. Os adicionais só aparecem depois do primeiro salvar: abra a sala de novo.",
+            "Em Adicionais da sala e Pacotes da sala, clique em + Adicionar outro e preencha título + identificador (ex.: Cadeiras / cadeiras e Day use / day-use).",
+            "Salve e abra /salas no site. A sala nova precisa aparecer junto da sala 1.",
           ]}
           expectItems={[
             "Card com título, descrição, capacidade, valor e disponibilidade.",
@@ -392,17 +404,32 @@ export default function DjangoPage() {
         />
       </Step>
 
-      <Step guide="django" id="parceiros" n="9" title="Parceiros (opcional)">
+      <Step guide="django" id="formulario" n="9" title="Publicar o formulário Fale Conosco">
         <p>
-          Use se quiser um cadastro extra. Não é o foco do Bug Bash — a Rede
-          cobre pessoas. Só confirme que Adicionar parceiro salva sem erro.
+          O site pede o slug <code>{PREP_FORM.slug}</code>. Sem esse formulário
+          publicado, /contato mostra “Não foi possível carregar o formulário.”
+          Isso não é o bug da simulação — é pré-requisito do caminho comum.
         </p>
-        <Shot
-          src="/shots/django/add-partner.png"
-          alt="Formulário Adicionar parceiro"
-          caption="Cadastro de parceiro. Categorias ficam em Categorias de parceiros."
-          tall
+        <DoExpect
+          doItems={[
+            "Em Formulários, clique em Adicionar.",
+            "Nome interno: BUGBASH Fale Conosco. Slug: fale-conosco. Tipo: Contato.",
+            "Marque Publicado.",
+            "Título público: Fale Conosco. Rótulo do botão: Enviar mensagem. Mensagem de sucesso: Mensagem enviada com sucesso.",
+            "Cole o JSON de campos abaixo em Campos.",
+            "SALVAR e abra /contato no site. O formulário Nome, E-mail e Mensagem precisa aparecer.",
+          ]}
+          expectItems={[
+            "GET do formulário deixa de responder “não encontrado”.",
+            "Enviar vazio mostra Informe seu nome, Informe seu e-mail e Escreva sua mensagem.",
+            "Um envio válido cai em Mensagens de contato, no passo 10.",
+          ]}
         />
+        <pre className="overflow-x-auto rounded-xl bg-[#1e2937] p-3 text-xs text-white">{`[
+  {"name":"name","label":"Nome","type":"text","required":true},
+  {"name":"email","label":"E-mail","type":"email","required":true},
+  {"name":"message","label":"Mensagem","type":"textarea","required":true}
+]`}</pre>
       </Step>
 
       <Step guide="django" id="contato" n="10" title="Ver mensagens do formulário">
@@ -441,8 +468,9 @@ export default function DjangoPage() {
           caption="Logout concluído."
         />
         <Callout tone="ok" title="Pronto para o site">
-          Com Home ativa, pelo menos 1 pessoa pública, 1 evento publicado e 1
-          sala pública, o grupo pode seguir o roteiro do site.
+          Libere o roteiro do site só com as três pessoas BUGBASH-, o evento
+          {` ${PREP_EVENT.title} `}publicado, a sala {PREP_ROOM.id} pública e o
+          formulário {PREP_FORM.slug} publicado.
         </Callout>
       </Step>
     </GuideShell>

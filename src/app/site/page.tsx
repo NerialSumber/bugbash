@@ -4,10 +4,21 @@ import { GuideShell } from "@/components/guide-shell";
 import { Shot } from "@/components/shot";
 import { Step } from "@/components/step";
 import { buttonVariants } from "@/components/ui/button";
-import { REPORT_FORM_URL } from "@/lib/links";
+import { CheckItem } from "@/components/check-item";
+import {
+  ADMIN_URL,
+  PREP_EVENT,
+  PREP_FORM,
+  PREP_PEOPLE,
+  PREP_ROOM,
+  REPORT_FORM_URL,
+  SITE_ALIAS_URL,
+  SITE_URL,
+} from "@/lib/links";
 
 const toc = [
   { id: "regras", label: "Regras do Bug Bash" },
+  { id: "antes", label: "0. Antes de testar" },
   { id: "nav", label: "1. Menu, rodapé e URLs" },
   { id: "home", label: "2. Home / landing" },
   { id: "rede", label: "3. Rede Prontera" },
@@ -24,7 +35,7 @@ export default function SitePage() {
     <GuideShell
       kicker="Documento 2"
       title="Roteiro do site Prontera"
-      intro="Teste como visitante. Abra o site, siga os passos na ordem e marque o quadradinho quando terminar. Se algo sair diferente do “o que deve acontecer”, registre no formulário de bugs."
+      intro="Teste como visitante, depois que o passo anterior no Django tiver criado os cadastros BUGBASH-. Siga os passos na ordem e marque o quadradinho quando terminar. Se algo sair diferente do “o que deve acontecer”, registre no formulário de bugs."
       toc={toc}
     >
       <section id="regras" className="mt-10 space-y-4">
@@ -34,12 +45,13 @@ export default function SitePage() {
             Site:{" "}
             <a
               className="text-primary underline"
-              href="https://prontera-eight.vercel.app"
+              href={SITE_URL}
               target="_blank"
               rel="noreferrer"
             >
-              https://prontera-eight.vercel.app
+              {SITE_URL}
             </a>
+            . O endereço {SITE_ALIAS_URL} redireciona para este.
           </li>
           <li>
             <strong>É bug:</strong> tela em branco, layout estourado, botão que
@@ -72,6 +84,78 @@ export default function SitePage() {
         </Callout>
       </section>
 
+      <section id="antes" className="mt-10 space-y-4">
+        <h2 className="font-display text-3xl text-primary">
+          Antes de testar o site
+        </h2>
+        <p>
+          O bug bash do site não começa nesta página. Primeiro alguém segue o{" "}
+          <a className="text-primary underline" href="/django">
+            roteiro Django
+          </a>{" "}
+          em{" "}
+          <a className="text-primary underline" href={ADMIN_URL}>
+            {ADMIN_URL}
+          </a>{" "}
+          e deixa estes cadastros no ar. Os prints mais abaixo ainda mostram
+          Juliana, “teste cafe” e duas salas de um ambiente anterior. No site
+          de hoje esses nomes não existem. Procure os nomes desta tabela.
+        </p>
+        <div className="overflow-x-auto rounded-xl bg-white text-sm ring-1 ring-foreground/10">
+          <table className="w-full text-left">
+            <thead className="bg-muted/70 text-xs tracking-wide uppercase">
+              <tr>
+                <th className="px-3 py-2">Cadastro</th>
+                <th className="px-3 py-2">Onde conferir</th>
+              </tr>
+            </thead>
+            <tbody className="[&_td]:px-3 [&_td]:py-2 [&_tr]:border-t">
+              {PREP_PEOPLE.map((person) => (
+                <tr key={person.slug}>
+                  <td>
+                    {person.name}
+                    <div className="font-mono text-xs text-muted-foreground">
+                      /redeprontera/{person.slug}
+                    </div>
+                  </td>
+                  <td>{person.note}</td>
+                </tr>
+              ))}
+              <tr>
+                <td>
+                  {PREP_EVENT.title}
+                  <div className="font-mono text-xs text-muted-foreground">
+                    /eventos e /eventos/{PREP_EVENT.slug}
+                  </div>
+                </td>
+                <td>
+                  Publicado, de {PREP_EVENT.start} a {PREP_EVENT.end}.
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  {PREP_ROOM.title}
+                  <div className="font-mono text-xs text-muted-foreground">
+                    /salas · id {PREP_ROOM.id}
+                  </div>
+                </td>
+                <td>Pública, com um adicional e um pacote.</td>
+              </tr>
+              <tr>
+                <td>
+                  Formulário {PREP_FORM.slug}
+                </td>
+                <td>Publicado. Sem ele, /contato não mostra os campos.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <Callout tone="warn" title="Se a lista da Rede estiver vazia">
+          O preparo não rodou neste ambiente. Volte ao roteiro Django. Não
+          teste em cima da sala 1 antiga nem invente conteúdo no meio do site.
+        </Callout>
+      </section>
+
       <Step guide="site" id="nav" n="1" title="Navegação: menu, rodapé e URL direta">
         <DoExpect
           doItems={[
@@ -101,7 +185,7 @@ export default function SitePage() {
         />
         <DoExpect
           doItems={[
-            "Abra https://prontera-eight.vercel.app e espere o Carregando landing page… sumir.",
+            `Abra ${SITE_URL} e espere o Carregando landing page… sumir.`,
             "Confira se o hero renderiza: título, subtítulo e texto.",
             "Clique nas bolhas: Sobre, Propósito, Como funciona, Juno, Rede, Eventos, Comunidade, Possibilidades, Próximos passos, Perguntas.",
             "Clique nos botões da seção Sobre (Entender a proposta, Ver salas e usos, Início).",
@@ -147,14 +231,14 @@ export default function SitePage() {
         <p className="font-semibold">3.1 Lista, busca e filtros</p>
         <DoExpect
           doItems={[
-            "Confira se os cards carregam (hoje há dezenas de nomes: Agnaldo, Bianca, Juliana…).",
-            "No campo Buscar, digite Juliana. Depois limpe.",
+            "Confira se os cards das pessoas BUGBASH- carregam. BUGBASH Oculta não pode aparecer.",
+            "No campo Buscar, digite BUGBASH Pessoa. Depois limpe.",
             "Busque um termo absurdo: zzzz-nao-existe.",
             "Abra Papel e escolha Sócio. Depois Área de atuação = Tecnologia. Depois um vínculo.",
             "Combine busca + filtro e depois limpe tudo.",
           ]}
           expectItems={[
-            "Juliana aparece no resultado.",
+            "BUGBASH Pessoa Completa aparece no resultado. BUGBASH Oculta não aparece.",
             "Busca vazia mostra: Nenhuma pessoa encontrada com os filtros atuais…",
             "Filtros realmente escondem quem não combina.",
             "Badges de Áreas de atuação e os selos (parceiro / outro) aparecem nos cards certos.",
@@ -169,28 +253,28 @@ export default function SitePage() {
         <p className="font-semibold">3.2 Perfil completo (com foto e rede social)</p>
         <DoExpect
           doItems={[
-            "No card da Juliana Negreiros, clique em Ver perfil.",
+            "No card da BUGBASH Pessoa Completa, clique em Ver perfil.",
             "Confira nome, headline, papéis, áreas, vínculos.",
-            "Clique no ícone do Instagram.",
-            "Copie a URL: deve ser /redeprontera/juliana-negreiros. Cole em uma aba nova.",
+            "Clique no ícone da rede social cadastrada no Django.",
+            "Copie a URL: deve ser /redeprontera/bugbash-pessoa-completa. Cole em uma aba nova.",
           ]}
           expectItems={[
             "Abre o perfil, com Voltar para Rede Prontera.",
-            "Foto (ou placeholder). Se aparecer o texto cru Foto de Juliana Negreiros no lugar da imagem, é bug.",
-            "Ícone do Instagram abre o perfil https://instagram.com/juu_negreiros (de preferência em nova aba).",
+            "Foto (ou placeholder). Se aparecer o texto cru da foto no lugar da imagem, é bug.",
+            "O ícone abre https://instagram.com/prontera (de preferência em nova aba).",
             "A URL com slug reabre o mesmo perfil.",
           ]}
         />
         <Shot
           src="/shots/site/perfil-juliana.png"
-          alt="Perfil de Juliana Negreiros"
-          caption="Perfil com headline, Instagram, papéis Sócio/Equipe, áreas e vínculos."
+          alt="Exemplo antigo de perfil com foto e Instagram"
+          caption="Print antigo (Juliana, ambiente anterior). No bash de hoje o perfil equivalente é BUGBASH Pessoa Completa."
         />
 
         <p className="font-semibold">3.3 Perfil sem foto</p>
         <DoExpect
           doItems={[
-            "Abra /redeprontera/agnaldo (ou outro card só com iniciais).",
+            "Abra /redeprontera/bugbash-sem-foto.",
           ]}
           expectItems={[
             "Círculo com as iniciais (AG), sem ícone quebrado.",
@@ -207,7 +291,7 @@ export default function SitePage() {
         <DoExpect
           doItems={[
             "Abra /redeprontera/nao-existe",
-            "Se alguém criou uma pessoa BUGBASH Oculta no Django, cole o slug dela aqui também.",
+            "Abra /redeprontera/bugbash-oculta.",
           ]}
           expectItems={[
             "Cartão Pessoa não encontrada — Este perfil não existe ou não está público.",
@@ -224,8 +308,10 @@ export default function SitePage() {
 
       <Step guide="site" id="eventos" n="4" title="Eventos">
         <p>
-          URL: <code>/eventos</code>. Há duas visões: Calendário e Lista. O
-          evento atual de homologação é <strong>teste cafe</strong> (14–18/set).
+          URL: <code>/eventos</code>. O preparo publicou{" "}
+          <strong>{PREP_EVENT.title}</strong> ({PREP_EVENT.start} a {PREP_EVENT.end}).
+          A API devolve esse evento, mas a página hoje não consegue montar o
+          calendário.
         </p>
         <Shot
           src="/shots/site/eventos-calendario.png"
@@ -234,20 +320,18 @@ export default function SitePage() {
         />
         <DoExpect
           doItems={[
-            "Abra /eventos. Confira o mês (setas &lt; &gt;).",
-            "Clique em um dia com teste cafe.",
-            "Alterne para Lista.",
-            "Na lista, use Buscar (Título ou descrição…), o mini calendário de dias, Tipo e Modalidade.",
-            "Clique no card teste cafe.",
-            "Cole /eventos/1 na barra (detalhe por id).",
-            "Cole /eventos/teste-cafe (detalhe por slug).",
-            "Cole /eventos/nao-existe.",
+            "Abra /eventos e espere o carregamento.",
+            "Se aparecer Não foi possível carregar os eventos, pare aqui e reporte. Esse é o bug da simulação: o workshop existe no admin e na API, e a página não lista.",
+            "Se o calendário carregar, confira setembro e outubro (setas < >) e clique num dia com BUGBASH Workshop.",
+            "Alterne para Lista e busque BUGBASH.",
+            "Anote a URL numérica que o clique abre (ex.: /eventos/1).",
+            "Cole /eventos/bugbash-workshop e /eventos/nao-existe.",
           ]}
           expectItems={[
-            "Calendário e Lista mostram o mesmo evento.",
-            "O detalhe por id (/eventos/1) abre título, tipo, formato, datas e o texto Nenhuma atividade publicada ainda.",
-            "Confira se o slug /eventos/teste-cafe também abre o evento. Se aparecer Evento não encontrado, anote — o calendário e o slug deveriam bater.",
-            "Evento inexistente: Evento não encontrado + Voltar para eventos. Sem tela branca.",
+            "Calendário e Lista mostram o BUGBASH Workshop nos dias 30/09 a 02/10.",
+            "Hoje a tela fica em Não foi possível carregar os eventos. Reporte com a URL /eventos, o que fez (abrir a página depois do preparo) e o que esperava (ver o workshop).",
+            "Se um dia a lista carregar: a URL numérica abre o detalhe, e /eventos/bugbash-workshop também deveria abrir. Se o slug mostrar Evento não encontrado, reporte esse segundo bug.",
+            "Evento inexistente, quando a página carrega: Evento não encontrado + Voltar para eventos.",
           ]}
         />
         <Shot
@@ -257,21 +341,28 @@ export default function SitePage() {
         />
         <Shot
           src="/shots/site/evento-detalhe.png"
-          alt="Página de detalhe do evento teste cafe"
-          caption="Detalhe em /eventos/1. Sem capa: Imagem em breve. Sem atividades cadastradas."
+          alt="Exemplo de página de detalhe de evento"
+          caption="Print antigo do detalhe pelo número. No bash de hoje o evento é BUGBASH Workshop. Sem capa: Imagem em breve."
+        />
+        <Shot
+          src="/shots/site/evento-slug-nao-encontrado.png"
+          alt="Evento não encontrado ao abrir pelo slug"
+          caption="Abrir o evento pelo slug cai nesta tela. O mesmo evento, pelo número, abre. Reporte esse caso."
         />
         <Shot
           src="/shots/site/evento-inexistente.png"
           alt="Evento não encontrado"
-          caption="Estado de evento inexistente ou não publicado."
+          caption="Estado de evento inexistente ou não publicado. A mensagem é a mesma do slug."
         />
       </Step>
 
       <Step guide="site" id="salas" n="5" title="Salas">
         <p>
-          URL: <code>/salas</code>. Dois cards: Sala 1 e Sala 2. Não há página
-          interna da sala — o 404 em <code>/salas/sala-1</code> é o
-          comportamento atual (confirme se isso é aceitável ou bug de produto).
+          URL: <code>/salas</code>. Já existe o card <strong>sala 1</strong> (15
+          pessoas, R$ 30/hora, 08:00–20:00, sem adicionais). O preparo acrescenta{" "}
+          <strong>{PREP_ROOM.title}</strong>. Não há página interna da sala — o
+          404 em <code>/salas/sala-1</code> e em <code>/salas/{PREP_ROOM.id}</code>{" "}
+          é o comportamento atual (confirme se isso é aceitável ou bug de produto).
         </p>
         <Shot
           src="/shots/site/salas.png"
@@ -280,15 +371,15 @@ export default function SitePage() {
         />
         <DoExpect
           doItems={[
-            "Confira título, descrição, capacidade, valor e horário de cada card.",
-            "Clique em Adicionais e Pacotes na Sala 1 e na Sala 2.",
+            "Confira sala 1 e BUGBASH Sala Teste: título, descrição, capacidade, valor e horário.",
+            "Em BUGBASH Sala Teste, clique em Adicionais e Pacotes.",
             "Clique em Reservar em cada sala. Veja se abre formulário, âncora, WhatsApp, Contato ou nada.",
-            "Abra /salas/nao-existe e /salas/sala-1.",
+            "Abra /salas/nao-existe, /salas/sala-1 e /salas/bugbash-sala.",
           ]}
           expectItems={[
             "Sem foto: Imagem em breve…, sem ícone quebrado.",
-            "Sala 1 expõe adicional Cadeiras e pacote Day use.",
-            "Sala 2 expõe Projetor e pacote Mensal.",
+            "BUGBASH Sala Teste expõe o adicional e o pacote criados no Django.",
+            "sala 1 não tem adicionais. Isso é o dado atual, não um bug.",
             "Reservar precisa fazer alguma coisa visível. Se só sublinhar o texto, anote.",
             "URL de sala inexistente: 404 amigável Página não encontrada, com botão Voltar para a página inicial.",
           ]}
@@ -308,8 +399,10 @@ export default function SitePage() {
       <Step guide="site" id="contato" n="6" title="Contato">
         <p>
           URL: <code>/contato</code>. Título Fale Conosco. Card de informações
-          à esquerda (ainda provisório se o Django não tiver Informações
-          gerais) e formulário à direita.
+          à esquerda (ainda provisório enquanto Informações gerais estiver
+          vazio) e, à direita, o formulário publicado com slug{" "}
+          <code>{PREP_FORM.slug}</code>. Se aparecer “Não foi possível carregar
+          o formulário”, o passo 9 do Django não foi feito.
         </p>
         <Shot
           src="/shots/site/contato.png"
@@ -370,12 +463,16 @@ export default function SitePage() {
                 <td>Lista de pessoas + filtros</td>
               </tr>
               <tr>
-                <td className="font-mono text-xs">/redeprontera/juliana-negreiros</td>
-                <td>Perfil da Juliana</td>
+                <td className="font-mono text-xs">/redeprontera/bugbash-pessoa-completa</td>
+                <td>Perfil da pessoa completa</td>
               </tr>
               <tr>
-                <td className="font-mono text-xs">/redeprontera/agnaldo</td>
+                <td className="font-mono text-xs">/redeprontera/bugbash-sem-foto</td>
                 <td>Perfil sem foto (iniciais)</td>
+              </tr>
+              <tr>
+                <td className="font-mono text-xs">/redeprontera/bugbash-oculta</td>
+                <td>Pessoa não encontrada</td>
               </tr>
               <tr>
                 <td className="font-mono text-xs">/redeprontera/nao-existe</td>
@@ -383,15 +480,15 @@ export default function SitePage() {
               </tr>
               <tr>
                 <td className="font-mono text-xs">/eventos</td>
-                <td>Calendário / lista</td>
+                <td>Calendário com o workshop. Hoje: Não foi possível carregar os eventos — reporte</td>
               </tr>
               <tr>
-                <td className="font-mono text-xs">/eventos/1</td>
-                <td>Detalhe do teste cafe</td>
+                <td className="font-mono text-xs">/eventos/&lt;id&gt;</td>
+                <td>Detalhe do BUGBASH Workshop (o número que o clique abre)</td>
               </tr>
               <tr>
-                <td className="font-mono text-xs">/eventos/teste-cafe</td>
-                <td>Detalhe ou Evento não encontrado — anote o que acontecer</td>
+                <td className="font-mono text-xs">/eventos/bugbash-workshop</td>
+                <td>Deveria abrir o workshop. Hoje: Evento não encontrado — reporte</td>
               </tr>
               <tr>
                 <td className="font-mono text-xs">/eventos/nao-existe</td>
@@ -399,7 +496,7 @@ export default function SitePage() {
               </tr>
               <tr>
                 <td className="font-mono text-xs">/salas</td>
-                <td>Dois cards de sala</td>
+                <td>sala 1 e BUGBASH Sala Teste</td>
               </tr>
               <tr>
                 <td className="font-mono text-xs">/salas/sala-1</td>
@@ -469,19 +566,20 @@ export default function SitePage() {
           <p>Tester: __________________ Navegador: __________________ Data: ________</p>
           <ul className="mt-4 space-y-2">
             {[
-              "Navegação (menu / rodapé / URL)",
-              "Home / hashes / bolhas / CTAs",
-              "Rede — lista, busca, filtros",
-              "Rede — perfil, Instagram, sem foto, 404",
-              "Eventos — calendário, lista, detalhe, slug",
-              "Salas — cards, adicionais, Reservar",
-              "Contato — validação e envio",
-              "Rotas / 404",
-              "Mobile",
-            ].map((item) => (
-              <li key={item} className="flex gap-2">
-                <span className="mt-0.5 inline-block size-4 rounded border" />
-                {item} — ok / bugs: _______________________________
+              ["site:nav", "Navegação (menu / rodapé / URL)"],
+              ["site:home", "Home / hashes / bolhas / CTAs"],
+              ["site:rede", "Rede — lista, busca, perfil, sem foto, oculta"],
+              ["site:eventos", "Eventos — calendário, lista, detalhe, slug"],
+              ["site:salas", "Salas — cards, adicionais, Reservar"],
+              ["site:contato", "Contato — validação e envio"],
+              ["site:rotas", "Rotas / 404"],
+              ["site:mobile", "Mobile"],
+            ].map(([key, label]) => (
+              <li key={key} className="flex gap-2">
+                <CheckItem storageKey={key} />
+                <span>
+                  {label} — ok / bugs: _______________________________
+                </span>
               </li>
             ))}
           </ul>
