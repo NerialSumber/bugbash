@@ -4,8 +4,10 @@ import { REPORT_FORM_URL, SITE_URL } from "@/lib/links";
 
 const WANT_TO_KNOW = [
   "O cadastro foi fácil de achar e de preencher?",
-  "A coisa que você cadastrou apareceu no site?",
+  "A coisa que você cadastrou apareceu no site, com o seu nome?",
+  "Depois de mudar um texto, o site atualizou?",
   "Nome, foto, data e texto apareceram completos?",
+  "No celular, o site abriu pelo WhatsApp sem a tela sair para o lado?",
   "Alguma página ficou em branco, cortada ou com um botão que não abre?",
 ];
 
@@ -15,10 +17,11 @@ export function BugbashBrief({ variant = "full" }: { variant?: "full" | "short" 
       <section className="mt-8 rounded-2xl bg-white p-5 ring-1 ring-foreground/10">
         <h2 className="font-display text-2xl text-primary">O que é este teste</h2>
         <p className="mt-2 text-[15px] leading-relaxed">
-          Um bug bash é um teste em grupo. Cada pessoa se cadastra no painel,
-          cadastra uma coisa com o próprio nome e abre o site para ver se ela
-          apareceu. O que queremos saber é se isso foi fácil e se a informação
-          saiu certa.
+          Um bug bash é um teste em grupo. Cada pessoa cria o próprio acesso,
+          entra com ele e cadastra a própria pessoa, o próprio evento e a
+          própria sala. O título leva o seu nome, nunca um texto igual ao das
+          outras. Depois muda uma palavra, atualiza o site e confere. No
+          celular, o link abre pelo WhatsApp.
         </p>
         <p className="mt-3 text-sm">
           <Link href="/" className="font-medium text-primary underline">
@@ -45,9 +48,9 @@ export function BugbashBrief({ variant = "full" }: { variant?: "full" | "short" 
         <article className="rounded-2xl bg-white p-5 ring-1 ring-foreground/10">
           <h2 className="font-display text-2xl text-primary">O objetivo</h2>
           <p className="mt-2 text-sm leading-relaxed text-foreground/90">
-            Ver se uma pessoa consegue entrar na plataforma, cadastrar uma
-            informação e encontrar essa informação no site, do jeito que
-            preencheu.
+            Ver se uma pessoa consegue criar o próprio acesso, entrar com ele,
+            cadastrar pessoa, evento e sala com o próprio nome, e encontrar
+            tudo isso no site, do jeito que preencheu.
           </p>
         </article>
         <article className="rounded-2xl bg-white p-5 ring-1 ring-foreground/10">
@@ -64,16 +67,22 @@ export function BugbashBrief({ variant = "full" }: { variant?: "full" | "short" 
         <h2 className="font-display text-2xl text-primary">O que cada pessoa faz</h2>
         <ol className="mt-3 list-decimal space-y-2 pl-5 text-[15px] leading-relaxed">
           <li>
-            Cadastre-se no painel. O passo a passo está no{" "}
+            No{" "}
             <Link href="/django" className="font-medium text-primary underline">
               roteiro de cadastro
             </Link>
-            . Entre com o usuário e a senha que estão lá e crie um acesso com o
-            seu nome.
+            , entre com o usuário compartilhado só para criar o seu acesso.
+            Saia e entre de novo com o seu usuário e a sua senha.
           </li>
           <li>
-            Cadastre uma coisa sua: uma pessoa da rede, um evento ou uma sala.
-            Coloque seu primeiro nome no título, para a gente saber de quem é.
+            Ainda com o seu acesso, crie três pessoas, um evento e uma sala.
+            O exemplo do roteiro usa Ana: Ana Teste, Workshop da Ana, Sala da
+            Ana. Troque Ana pelo seu primeiro nome. Slug sem acento, como
+            ana-teste e ana-workshop. Se já existir, use ana-workshop-2.
+          </li>
+          <li>
+            Não edite a página inicial, a sala 1 nem o formulário de contato se
+            eles já existirem. Esses cadastros são um só para o site inteiro.
           </li>
           <li>
             Abra o{" "}
@@ -85,11 +94,13 @@ export function BugbashBrief({ variant = "full" }: { variant?: "full" | "short" 
             >
               site
             </a>{" "}
-            e procure o que você acabou de cadastrar. O{" "}
+            e procure o seu nome na Rede, em Eventos e em Salas. Mude uma
+            palavra de cada um no painel, atualize e veja se o texto novo
+            apareceu. O{" "}
             <Link href="/site" className="font-medium text-primary underline">
               roteiro do site
             </Link>{" "}
-            mostra onde olhar.
+            mostra o caminho. No celular, abra o link pelo WhatsApp.
           </li>
           <li>
             Se não aparecer, ou aparecer diferente do que você preencheu,
