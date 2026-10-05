@@ -13,17 +13,17 @@ export const PREP_PEOPLE = [
   {
     name: "BUGBASH Pessoa Completa",
     slug: "bugbash-pessoa-completa",
-    note: "Pública, com foto, papel, área, vínculo e uma rede social.",
+    note: "Aparece para todo mundo, com foto e um Instagram.",
   },
   {
     name: "BUGBASH Sem Foto",
     slug: "bugbash-sem-foto",
-    note: "Pública, sem imagem. O card deve mostrar iniciais.",
+    note: "Aparece para todo mundo, sem foto. O cartão mostra as iniciais.",
   },
   {
     name: "BUGBASH Oculta",
     slug: "bugbash-oculta",
-    note: "Pública desmarcada. Não entra na lista nem abre por URL.",
+    note: "Fica escondida. Não entra na lista.",
   },
 ] as const;
 
