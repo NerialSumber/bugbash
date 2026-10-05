@@ -1,8 +1,10 @@
 # Roteiros de Bug Bash — Espaço Prontera
 
+A página inicial explica o que é o bug bash, o objetivo e o que cada pessoa faz: cadastrar-se no painel, criar uma coisa com o próprio nome e ver se ela aparece no site.
+
 Dois manuais passo a passo, com prints reais das telas:
 
-- **Admin Django** — login, mapa do painel e como criar/editar Home, pessoas, eventos e salas
+- **Painel de cadastro** — login, mapa do painel e como criar usuário, seções da Home, pessoas, eventos e salas
 - **Site Prontera** — o que clicar no site público e o que deveria acontecer
 
 Vídeos em `public/videos/`: capa dos roteiros, preparo no admin, caminho comum no site e a simulação de report do bug de Eventos.

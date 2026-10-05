@@ -1,4 +1,4 @@
-import { Callout } from "@/components/callout";
+import { BugbashBrief } from "@/components/bugbash-brief";
 import { DoExpect } from "@/components/expect";
 import { GuideShell } from "@/components/guide-shell";
 import { Shot } from "@/components/shot";
@@ -6,45 +6,52 @@ import { Step } from "@/components/step";
 import { ADMIN_URL, PREP_EVENT, PREP_FORM, PREP_ROOM } from "@/lib/links";
 
 const toc = [
-  { id: "regras", label: "Para quem é este doc" },
-  { id: "login", label: "1. Login" },
-  { id: "mapa", label: "2. Mapa do admin" },
-  { id: "usuario", label: "3. Criar usuário" },
-  { id: "home", label: "4. Home / landing" },
-  { id: "info", label: "5. Informações gerais" },
-  { id: "rede", label: "6. Pessoas da Rede" },
-  { id: "eventos", label: "7. Eventos" },
-  { id: "salas", label: "8. Salas" },
-  { id: "formulario", label: "9. Formulário Fale Conosco" },
-  { id: "contato", label: "10. Mensagens de contato" },
-  { id: "logout", label: "11. Encerrar sessão" },
+  { id: "regras", label: "Como entrar" },
+  { id: "login", label: "1. Entrar" },
+  { id: "mapa", label: "2. O que tem aqui" },
+  { id: "usuario", label: "3. Criar o seu acesso" },
+  { id: "home", label: "4. Página inicial" },
+  { id: "info", label: "5. Dados de contato" },
+  { id: "rede", label: "6. Cadastrar uma pessoa" },
+  { id: "eventos", label: "7. Cadastrar um evento" },
+  { id: "salas", label: "8. Cadastrar uma sala" },
+  { id: "formulario", label: "9. Formulário de contato" },
+  { id: "contato", label: "10. Mensagens recebidas" },
+  { id: "logout", label: "11. Sair" },
 ];
 
 export default function DjangoPage() {
   return (
     <GuideShell
-      kicker="Documento 1"
-      title="Roteiro do Django"
-      intro="Este roteiro é o passo anterior ao bug bash do site. Uma pessoa entra no admin de staging, cria os cadastros BUGBASH- e só então o grupo abre o roteiro do site. Não apague o que já existe."
+      kicker="Passo 1"
+      title="Cadastre a sua coisa"
+      intro="Este é o lugar onde você cria as informações que o site mostra. Entre, crie um acesso com o seu nome e cadastre pelo menos uma coisa: uma pessoa, um evento ou uma sala. Não apague o que outra pessoa já criou."
       toc={toc}
     >
+      <BugbashBrief variant="short" />
       <section id="regras" className="mt-10 space-y-4">
-        <h2 className="font-display text-3xl text-primary">Para quem é este doc</h2>
+        <h2 className="font-display text-3xl text-primary">Como entrar</h2>
         <p>
-          É o guia de <strong>preparação</strong>. O site público lê tudo daqui.
-          Quem for só testar a navegação pode pular para o roteiro do site.
+          O painel é uma página separada do site, só para quem vai cadastrar.
+          O site que as pessoas visitam mostra o que for salvo aqui. Crie o
+          seu acesso e pelo menos um cadastro com o seu primeiro nome no
+          título. Quem já fez isso pode ir para o{" "}
+          <a className="font-medium text-primary underline" href="/site">
+            roteiro do site
+          </a>{" "}
+          e conferir se apareceu.
         </p>
         <div className="overflow-x-auto rounded-xl bg-white text-sm ring-1 ring-foreground/10">
           <table className="w-full text-left">
             <thead className="bg-muted/70 text-xs tracking-wide uppercase">
               <tr>
-                <th className="px-3 py-2">Campo</th>
-                <th className="px-3 py-2">Valor</th>
+                <th className="px-3 py-2">O que é</th>
+                <th className="px-3 py-2">Escreva assim</th>
               </tr>
             </thead>
             <tbody>
               <tr className="border-t">
-                <td className="px-3 py-2">URL</td>
+                <td className="px-3 py-2">Link do painel</td>
                 <td className="px-3 py-2">
                   <a
                     className="text-primary underline"
@@ -69,354 +76,355 @@ export default function DjangoPage() {
         </div>
       </section>
 
-      <Step guide="django" id="login" n="1" title="Entrar no admin">
+      <Step guide="django" id="login" n="1" title="Entrar no painel">
+        <p>
+          Abra o link da tabela acima. Vai aparecer uma tela pedindo usuário e
+          senha, igual a um login de e-mail.
+        </p>
         <DoExpect
           doItems={[
-            "Abra a URL do admin no Chrome ou Firefox.",
+            "Abra o link do painel no Chrome ou no Firefox.",
             "No campo Usuário, digite admin.",
             "No campo Senha, digite banana.",
             "Clique no botão azul Acessar.",
           ]}
           expectItems={[
-            "A tela chama Administração do Django.",
-            "Há dois campos: Usuário e Senha.",
-            "Depois do login, você cai no painel Administração do Site.",
-            "Senha errada mostra erro e permanece no login.",
+            "A tela pede só duas coisas: Usuário e Senha.",
+            "Depois de entrar, abre uma lista de assuntos: pessoas, eventos, salas e outros.",
+            "Se a senha estiver errada, a página avisa e continua na mesma tela.",
           ]}
         />
         <Shot
           src="/shots/django/login.png"
-          alt="Tela de login do Django com campos Usuário, Senha e botão Acessar"
-          caption="Tela de login. Botão Acessar no centro."
+          alt="Tela de entrada com os campos Usuário e Senha e o botão Acessar"
+          caption="Tela de entrada. O botão azul Acessar fica no centro."
         />
       </Step>
 
-      <Step guide="django" id="mapa" n="2" title="Ler o mapa do admin">
+      <Step guide="django" id="mapa" n="2" title="Entender o que tem neste painel">
         <p>
-          Depois do login você vê os grupos abaixo. Cada linha tem{" "}
-          <strong>+ Adicionar</strong> (form em branco) e{" "}
-          <strong>Modificar</strong> (lista do que já existe).
+          Esta primeira tela é o mapa. Cada linha é um tipo de cadastro.{" "}
+          <strong>Adicionar</strong> abre um formulário em branco.{" "}
+          <strong>Modificar</strong> abre a lista do que já foi criado. A coluna
+          da esquerda leva de um assunto para outro.
         </p>
         <Shot
           src="/shots/django/dashboard.png"
-          alt="Painel inicial do Django com todos os apps e modelos"
-          caption="Painel inicial. Use a coluna da esquerda para ir de um módulo a outro."
+          alt="Primeira tela do painel, com a lista de assuntos"
+          caption="Primeira tela. Use a coluna da esquerda para mudar de assunto."
         />
         <div className="overflow-x-auto rounded-xl bg-white text-sm ring-1 ring-foreground/10">
           <table className="w-full text-left">
             <thead className="bg-muted/70 text-xs tracking-wide uppercase">
               <tr>
-                <th className="px-3 py-2">Grupo</th>
-                <th className="px-3 py-2">O que controla no site</th>
+                <th className="px-3 py-2">Nome na tela</th>
+                <th className="px-3 py-2">O que isso muda no site</th>
               </tr>
             </thead>
             <tbody className="[&_tr]:border-t">
               <tr>
                 <td className="px-3 py-2 font-medium">Autenticação</td>
-                <td className="px-3 py-2">Usuários e grupos que entram neste admin.</td>
+                <td className="px-3 py-2">Quem pode entrar neste painel.</td>
               </tr>
               <tr>
                 <td className="px-3 py-2 font-medium">Seções da landing page</td>
                 <td className="px-3 py-2">
-                  É o que a Home do site realmente mostra (bolhas, textos, FAQ, CTAs).
+                  Os textos e as bolhas da primeira página do site. O nome na tela é este.
                 </td>
               </tr>
               <tr>
                 <td className="px-3 py-2 font-medium">Conteúdo da Home</td>
                 <td className="px-3 py-2">
-                  Formulário antigo de hero. Prefira editar as seções da landing.
+                  Um formulário antigo. Para mudar a primeira página, use as seções acima.
                 </td>
               </tr>
               <tr>
                 <td className="px-3 py-2 font-medium">Informações gerais do Prontera</td>
                 <td className="px-3 py-2">
-                  E-mail, telefone e endereço da página Contato. Hoje a lista está vazia.
+                  E-mail, telefone e endereço da página Fale conosco.
                 </td>
               </tr>
               <tr>
                 <td className="px-3 py-2 font-medium">Pessoas</td>
-                <td className="px-3 py-2">Cards e perfis da Rede Prontera.</td>
+                <td className="px-3 py-2">Os cartões da página Rede Prontera.</td>
               </tr>
               <tr>
                 <td className="px-3 py-2 font-medium">Eventos</td>
-                <td className="px-3 py-2">Calendário, lista e página do evento.</td>
+                <td className="px-3 py-2">O calendário e a página de cada evento.</td>
               </tr>
               <tr>
                 <td className="px-3 py-2 font-medium">Salas</td>
-                <td className="px-3 py-2">Cards de Sala 1 / Sala 2, adicionais e pacotes.</td>
+                <td className="px-3 py-2">Os cartões das salas, com preço e extras.</td>
               </tr>
               <tr>
                 <td className="px-3 py-2 font-medium">Formulários</td>
                 <td className="px-3 py-2">
-                  Definição do Fale Conosco. Sem o slug fale-conosco publicado,
-                  a página Contato não carrega o formulário.
+                  O formulário da página Fale conosco. Sem ele, a página não mostra os campos.
                 </td>
               </tr>
               <tr>
                 <td className="px-3 py-2 font-medium">Mensagens de contato</td>
-                <td className="px-3 py-2">Caixa de entrada do formulário Fale Conosco.</td>
+                <td className="px-3 py-2">As mensagens que as pessoas enviaram pelo site.</td>
               </tr>
             </tbody>
           </table>
         </div>
       </Step>
 
-      <Step guide="django" id="usuario" n="3" title="Criar um usuário de teste">
+      <Step guide="django" id="usuario" n="3" title="Criar o seu acesso">
+        <p>
+          O usuário admin é compartilhado. Crie um acesso com o seu nome para a
+          gente saber quem cadastrou o quê. Esse acesso serve só para entrar
+          neste painel. O site público não pede login.
+        </p>
         <DoExpect
           doItems={[
-            "No grupo Autenticação e autorização, clique em Usuários → Adicionar.",
-            "Preencha Usuário (ex.: bugbash.teste), Senha e Confirmação de senha.",
-            "Clique em SALVAR. Na tela seguinte, marque Equipe e Superusuário se essa pessoa também for editar o admin.",
-            "Salve de novo.",
+            "Procure Autenticação e autorização, depois Usuários, e clique em Adicionar.",
+            "No usuário, use o seu nome sem espaço. Exemplo: ana.teste.",
+            "Crie uma senha, repita no campo de confirmação e clique em SALVAR.",
+            "Na tela seguinte, marque Equipe e Superusuário. Essas duas caixas deixam você cadastrar coisas também.",
+            "Clique em SALVAR de novo.",
           ]}
           expectItems={[
-            "O Django aceita só letras, números e @/./+/-/_ no usuário.",
-            "A senha precisa ter 8+ caracteres e não pode ser óbvia.",
-            "Depois de salvar, o usuário aparece em /admin/auth/user/.",
-            "Esse login serve para o admin, não para o site público.",
+            "O nome de usuário aceita letras, números e os sinais @ . + - _.",
+            "A senha precisa ter pelo menos 8 caracteres e não pode ser uma palavra óbvia, como 12345678.",
+            "Depois de salvar, o seu nome aparece na lista de usuários.",
           ]}
         />
         <Shot
           src="/shots/django/add-user.png"
-          alt="Formulário Adicionar usuário com usuário, senha e confirmação"
-          caption="Primeira tela de Adicionar usuário. Depois do salvar, abrem as permissões."
+          alt="Formulário para adicionar um usuário, com nome, senha e confirmação"
+          caption="Primeira tela de um usuário novo. Depois de salvar, aparecem as permissões."
         />
         <Shot
           src="/shots/django/list-user.png"
-          alt="Lista de usuários do Django"
-          caption="Lista de quem já pode entrar no admin."
+          alt="Lista de pessoas que podem entrar no painel"
+          caption="Lista de quem já pode entrar no painel."
           tall
         />
       </Step>
 
-      <Step guide="django" id="home" n="4" title="Editar a Home (seções da landing)">
+      <Step guide="django" id="home" n="4" title="Mudar um texto da página inicial">
         <p>
-          Clique em <strong>Seções da landing page</strong>. Cada linha vira uma
-          bolha na Home e uma âncora na URL (<code>#hero</code>,{" "}
-          <code>#faq</code>, <code>#sobre</code>…).
+          A primeira página do site é feita de blocos: o texto grande do começo
+          e as bolhas ao redor (Sobre, Perguntas e outras). Cada bloco é uma
+          linha em <strong>Seções da landing page</strong>. Esse é o nome que
+          aparece na tela.
         </p>
         <Shot
           src="/shots/django/list-landing.png"
-          alt="Lista das 11 seções da landing page com ordem, âncora, tipo e flag Ativa"
-          caption="11 seções ativas. A coluna Ativa controla se a seção aparece no site. Há um botão Salvar no fim da lista para mudar a ordem."
+          alt="Lista dos blocos da página inicial"
+          caption="Cada linha é um pedaço da primeira página. A coluna Ativa decide se ele aparece no site."
         />
         <DoExpect
           doItems={[
-            "Clique na âncora hero para abrir a seção Início.",
-            "Mude um texto pequeno (eyebrow, título ou CTA) com prefixo BUGBASH- se for testar conteúdo.",
-            "Confira CTA — rótulo + CTA — URL ou âncora (ex.: #sobre). Os dois precisam estar preenchidos para o botão aparecer.",
-            "Desmarque Ativa só em uma seção de teste, salve, e recarregue o site. Depois reative.",
-            "Use Adicionar seção da landing page só se quiser uma seção extra.",
+            "Clique na linha do início da página. Na lista ela pode aparecer com o nome hero.",
+            "Mude só uma frase curta: o título ou o texto do botão. Coloque seu primeiro nome nessa frase, para reconhecer depois.",
+            "Se existir um botão, o texto do botão e o destino precisam estar os dois preenchidos. Destino pode ser #sobre, que desce até a parte Sobre.",
+            "Desmarque Ativa em um bloco de teste, salve e atualize o site. A bolha deve sumir. Depois marque Ativa de novo e salve.",
+            "Só clique em Adicionar se quiser criar um bloco novo.",
           ]}
           expectItems={[
-            "A Home do site muda depois de um refresh (às vezes leva alguns segundos).",
-            "Seção inativa some, e o layout não deveria quebrar.",
-            "Âncora da chave (faq, sobre, hero) continua funcionando em URLs com #.",
-            "Tipos possíveis: Hero, Texto, Visão geral, Destaque (callout), FAQ, Links.",
+            "A primeira página do site muda depois que você atualiza. Às vezes leva alguns segundos.",
+            "Um bloco desmarcado some, e o resto da página continua no lugar.",
+            "Os tipos de bloco são: começo da página, texto, visão geral, destaque, perguntas e links.",
           ]}
         />
         <Shot
           src="/shots/django/edit-landing.png"
-          alt="Formulário de edição da seção hero da landing"
-          caption="Edição da seção 1. Início (hero): chave, tipo, textos, dois CTAs, ordem e flag Ativa."
+          alt="Formulário do bloco de início da página"
+          caption="Edição do bloco de início: textos, botões, ordem e a caixinha Ativa."
           tall
         />
-        <Callout title="Conteúdo da Home vs seções">
-          Existe também Conteúdo da Home (hero antigo). A Home publicada hoje
-          lê as <strong>Seções da landing page</strong>. Use aquele outro form
-          só se quiser conferir se ainda tem efeito.
-        </Callout>
         <Shot
           src="/shots/django/add-homecontent.png"
-          alt="Formulário Conteúdo da Home com hero, introdução e CTAs"
-          caption="Conteúdo da Home — formulário paralelo. Não é o caminho principal."
+          alt="Formulário antigo da página inicial"
+          caption="Este outro formulário é antigo. O caminho de hoje é a lista de seções."
           tall
         />
       </Step>
 
-      <Step guide="django" id="info" n="5" title="Preencher informações gerais (Contato)">
+      <Step guide="django" id="info" n="5" title="Preencher e-mail, telefone e endereço">
         <p>
-          A lista está vazia. Por isso a página Contato ainda mostra “Dados
-          provisórios para layout”.
+          A página Fale conosco tem um cartão com os dados do espaço. Se esta
+          lista estiver vazia, o site ainda mostra um texto provisório no lugar
+          desses dados.
         </p>
         <Shot
           src="/shots/django/list-pronterainfo.png"
-          alt="Lista vazia de Informações gerais do Prontera"
-          caption="0 registros. Clique em Adicionar informações gerais do Prontera."
+          alt="Lista vazia das informações gerais"
+          caption="Se estiver em zero, clique em Adicionar informações gerais do Prontera."
         />
         <DoExpect
           doItems={[
             "Clique em Adicionar.",
-            "Preencha Nome, e-mail de contato, telefone e endereço.",
-            "Deixe Ativo marcado e clique em SALVAR.",
-            "Abra o site em /contato e veja se o card Informações mudou.",
+            "Preencha o nome do espaço, o e-mail, o telefone e o endereço.",
+            "Deixe a caixinha Ativo marcada e clique em SALVAR.",
+            "Abra a página Fale conosco do site e veja se o cartão da esquerda mudou.",
           ]}
           expectItems={[
-            "O card da esquerda na página Contato deixa de mostrar o texto provisório.",
-            "E-mail e telefone iguais aos que você digitou.",
+            "O texto provisório some.",
+            "E-mail e telefone são os mesmos que você digitou.",
           ]}
         />
         <Shot
           src="/shots/django/add-pronterainfo.png"
-          alt="Formulário Informações gerais com nome, descrições, endereço, e-mail, telefone e Instagram"
-          caption="Campos de contato e localização. Marque Ativo."
+          alt="Formulário de nome, endereço, e-mail, telefone e Instagram"
+          caption="Preencha contato e endereço. Deixe Ativo marcado."
           tall
         />
       </Step>
 
-      <Step guide="django" id="rede" n="6" title="Criar e editar pessoas da Rede">
+      <Step guide="django" id="rede" n="6" title="Cadastrar pessoas da Rede">
         <p>
-          Em <strong>Pessoas → Pessoas</strong> a lista de staging começa vazia.
-          A coluna <strong>Pública</strong> decide se a pessoa aparece na Rede.
-          Crie as três pessoas abaixo antes de liberar o roteiro do site. O
-          papel “Parceiro” continua existindo aqui — é classificação de pessoa,
-          não o menu Parceiros (esse menu não está neste admin).
+          A Rede é a página de pessoas do site. Em{" "}
+          <strong>Pessoas → Pessoas</strong>, clique em Adicionar pessoa. A
+          caixinha <strong>Pública</strong> decide se ela aparece para todo
+          mundo. Crie três pessoas, para ver três situações. Use o seu primeiro
+          nome na primeira. Não apague pessoas que já estejam na lista.
         </p>
         <Shot
           src="/shots/django/list-person.png"
-          alt="Lista de pessoas com nome, slug, pública e destaque"
-          caption="Lista de pessoas. Filtros à direita: Pública, Destaque, Papéis, Áreas, Vínculos."
+          alt="Lista de pessoas, com nome e a coluna Pública"
+          caption="Lista de pessoas. Do lado direito dá para filtrar por pública, destaque, papel, área e vínculo."
         />
-        <p className="font-semibold">Para criar uma pessoa de teste</p>
+        <p className="font-semibold">As três pessoas</p>
         <DoExpect
           doItems={[
-            "Clique em Adicionar pessoa.",
-            "Nome: BUGBASH Pessoa Completa. Slug: bugbash-pessoa-completa.",
-            "Headline: uma linha de apresentação.",
-            "Foto: envie um PNG/JPG quadrado.",
-            "Redes sociais: cole o JSON de exemplo abaixo.",
-            "Em Classificação, escolha pelo menos 1 papel, 1 área e 1 vínculo.",
-            "Marque Pública. Salve.",
-            "Crie BUGBASH Sem Foto, slug bugbash-sem-foto, pública, sem imagem.",
-            "Crie BUGBASH Oculta, slug bugbash-oculta, e deixe Pública desmarcada.",
+            "Pessoa completa: nome com o seu primeiro nome, por exemplo Ana Teste. No campo Slug, escreva o mesmo nome sem espaço e em minúsculas, como ana-teste. O slug é o pedacinho do link.",
+            "Escreva uma frase curta de apresentação. Envie uma foto quadrada. Em papel, área e vínculo, escolha pelo menos uma opção em cada.",
+            "No campo de redes sociais, cole o texto do quadro escuro abaixo, sem mudar aspas nem chaves. Ele diz que a pessoa tem um Instagram.",
+            "Marque Pública e salve.",
+            "Crie uma segunda pessoa, pública, sem foto. Pode chamar de Sem Foto e usar o slug bugbash-sem-foto.",
+            "Crie uma terceira, com o nome Oculta e o slug bugbash-oculta, e deixe Pública desmarcada.",
           ]}
           expectItems={[
-            "A pessoa pública aparece em /redeprontera e em /redeprontera/bugbash-pessoa-completa.",
-            "A pessoa sem foto mostra iniciais no círculo (ex.: AG), não um ícone quebrado.",
-            "A pessoa oculta não sai na lista nem na busca. A URL direta deve dizer Pessoa não encontrada.",
+            "A pessoa pública aparece na página Rede e abre quando você clica em Ver perfil.",
+            "A pessoa sem foto mostra as iniciais dentro de um círculo, em vez de uma imagem quebrada.",
+            "A pessoa oculta não aparece na lista nem na busca. Se alguém abrir o link dela, o site diz que a pessoa não foi encontrada.",
           ]}
         />
         <pre className="overflow-x-auto rounded-xl bg-[#1e2937] p-3 text-xs text-white">{`[{"url":"https://instagram.com/prontera","platform":"Instagram"}]`}</pre>
         <Shot
           src="/shots/django/add-person.png"
-          alt="Formulário completo de Adicionar Pessoa"
-          caption="Blocos: Identificação, Conteúdo, Classificação, Publicação (Pública / Destaque / Ordem)."
+          alt="Formulário completo para adicionar uma pessoa"
+          caption="O formulário tem nome, texto, classificação e a caixinha Pública."
           tall
         />
         <Shot
           src="/shots/django/edit-person.png"
-          alt="Exemplo antigo de edição de pessoa com foto e Instagram"
-          caption="Print antigo (Juliana, admin de production). No staging, preencha do mesmo jeito a BUGBASH Pessoa Completa."
+          alt="Exemplo de uma pessoa já preenchida, com foto e Instagram"
+          caption="Exemplo de uma pessoa preenchida. A foto e o Instagram ficam neste mesmo formulário."
           tall
         />
         <p>
-          Papéis, áreas e vínculos são listas à parte. Só adicione item novo
-          se faltar uma opção; as listas atuais já alimentam os filtros da Rede.
+          Papel, área e vínculo são listas separadas. Só crie uma opção nova se
+          a que você precisa não existir. As opções de hoje já aparecem nos
+          filtros da Rede.
         </p>
         <div className="grid gap-3 sm:grid-cols-3">
-          <Shot src="/shots/django/list-roles.png" alt="Lista de papéis" caption="Papéis / relações" />
+          <Shot src="/shots/django/list-roles.png" alt="Lista de papéis" caption="Papéis" />
           <Shot src="/shots/django/list-expertise.png" alt="Lista de áreas" caption="Áreas de atuação" />
           <Shot src="/shots/django/list-connections.png" alt="Lista de vínculos" caption="Vínculos com o Prontera" />
         </div>
       </Step>
 
-      <Step guide="django" id="eventos" n="7" title="Criar e publicar um evento">
+      <Step guide="django" id="eventos" n="7" title="Cadastrar um evento">
         <p>
-          A lista de staging começa vazia. Não procure “teste cafe”: esse
-          evento está só no admin de production. Crie o{" "}
-          <strong>{PREP_EVENT.title}</strong> com slug{" "}
-          <code>{PREP_EVENT.slug}</code>, de {PREP_EVENT.start} a {PREP_EVENT.end},
-          para ele aparecer no calendário de setembro e de outubro.
+          Crie o evento <strong>{PREP_EVENT.title}</strong>. Ele começa em{" "}
+          {PREP_EVENT.start} e termina em {PREP_EVENT.end}, para aparecer no
+          calendário de setembro e de outubro. No campo Slug, escreva{" "}
+          <code>{PREP_EVENT.slug}</code>. Não apague eventos que já existam.
         </p>
         <Shot
           src="/shots/django/list-event.png"
-          alt="Lista de eventos com filtros de tipo, formato e status"
-          caption="Lista de eventos. Status de publicação: Rascunho, Publicado, Arquivado."
+          alt="Lista de eventos"
+          caption="Lista de eventos. Um evento pode estar como rascunho, publicado ou arquivado."
         />
         <DoExpect
           doItems={[
             "Clique em Adicionar evento.",
             "Título: BUGBASH Workshop. Slug: bugbash-workshop. Tipo: Evento promocional. Formato: Presencial.",
-            "Status de publicação: comece em Rascunho, salve, olhe o site (não deve aparecer). Depois mude para Publicado.",
-            "Início: 30/09/2026 10:00. Término: 02/10/2026 18:00. O admin avisa o fuso de −3h.",
-            "Resumo aparece no card. Descrição (Markdown) aparece na página do evento.",
-            "Opcional: + Adicionar trilha / atividade no fim do form.",
-            "SALVAR. O evento precisa existir na lista do admin com status Publicado. No site, /eventos hoje mostra “Não foi possível carregar os eventos” mesmo com este registro publicado — isso é o bug da simulação no outro roteiro.",
+            "Deixe primeiro como Rascunho, salve e olhe a página de eventos do site. Ele ainda não deve aparecer.",
+            "Volte e mude para Publicado.",
+            "Início: 30/09/2026 às 10:00. Término: 02/10/2026 às 18:00.",
+            "O resumo é a frase curta do cartão. A descrição é o texto longo da página do evento.",
+            "Salve. Se a página de eventos do site disser que não conseguiu carregar, anote no formulário. O evento está publicado, mas a página não mostrou.",
           ]}
           expectItems={[
             "Rascunho não entra no calendário.",
-            "Publicado aparece nos dias do intervalo.",
-            "A página de detalhe abre com título, tipo, formato e datas.",
-            "Sem atividades, o detalhe mostra Nenhuma atividade publicada ainda.",
+            "Publicado aparece nos dias entre o início e o fim.",
+            "A página do evento mostra título, tipo, formato e datas.",
+            "Se você não criou atividades, a página diz que ainda não há atividade publicada.",
           ]}
         />
         <Shot
           src="/shots/django/add-event.png"
-          alt="Formulário Adicionar Evento"
-          caption="Informações básicas, publicação, datas, conteúdo, trilhas e atividades."
+          alt="Formulário para adicionar um evento"
+          caption="Título, publicação, datas e texto do evento."
           tall
         />
         <Shot
           src="/shots/django/add-activity.png"
-          alt="Formulário de atividade de evento"
-          caption="Atividades ficam ligadas a um evento. Dá para criar pela tela de Eventos ou por Atividades no menu."
+          alt="Formulário de uma atividade dentro do evento"
+          caption="Uma atividade é um horário dentro do evento. Dá para criar no fim do formulário do evento."
           tall
         />
       </Step>
 
-      <Step guide="django" id="salas" n="8" title="Criar ou editar uma sala">
+      <Step guide="django" id="salas" n="8" title="Cadastrar uma sala">
         <p>
-          Neste staging já existe uma sala pública, <strong>sala 1</strong>{" "}
-          (multiuso, 15 pessoas, R$ 30/hora, 08:00–20:00), sem adicionais. Não
-          edite essa sala. Crie a sala do Bug Bash ao lado dela.
+          Já existe uma sala chamada <strong>sala 1</strong>. Não mude o preço
+          nem a capacidade dela. Crie uma sala nova ao lado, com o seu teste.
         </p>
         <DoExpect
           doItems={[
-            "Abra Salas e confira a sala 1 que já existe. Não mude o valor nem a capacidade.",
-            `Crie ${PREP_ROOM.title}: título, identificador ${PREP_ROOM.id}, tipo, descrição, valor hora, capacidade, horários.`,
-            "Marque Pública. Salve. Os adicionais só aparecem depois do primeiro salvar: abra a sala de novo.",
-            "Em Adicionais da sala e Pacotes da sala, clique em + Adicionar outro e preencha título + identificador (ex.: Cadeiras / cadeiras e Day use / day-use).",
-            "Salve e abra /salas no site. A sala nova precisa aparecer junto da sala 1.",
+            "Abra Salas e olhe a sala 1. Não altere valor nem capacidade.",
+            `Clique em Adicionar e crie ${PREP_ROOM.title}. No identificador, escreva ${PREP_ROOM.id}. Esse identificador vira o final do link.`,
+            "Preencha tipo, descrição, valor da hora, capacidade e horário. Marque Pública e salve.",
+            "Abra a sala de novo. Agora aparecem os extras. Em Adicionais, crie um chamado Cadeiras. Em Pacotes, crie um chamado Day use.",
+            "Salve e abra a página de salas do site. A sala nova precisa aparecer junto da sala 1.",
           ]}
           expectItems={[
-            "Card com título, descrição, capacidade, valor e disponibilidade.",
-            "Sem imagem: o site mostra Imagem em breve…",
-            "Adicionais e pacotes expandem no card. Não existe hoje página /salas/sala-1 (isso é 404).",
+            "O cartão mostra título, descrição, capacidade, valor e horário.",
+            "Sem foto, o site escreve “Imagem em breve”.",
+            "Cadeiras e Day use abrem quando a pessoa clica em Adicionais e Pacotes.",
           ]}
         />
         <Shot
           src="/shots/django/edit-room.png"
-          alt="Edição da Sala 1 com adicionais Cadeiras e pacote Day use"
-          caption="Sala 1: identificador sala-1, tipo Multiuso, Pública marcada, adicional Cadeiras e pacote Day use."
+          alt="Edição de uma sala com o extra Cadeiras e o pacote Day use"
+          caption="Exemplo de sala publicada, com um extra e um pacote."
           tall
         />
         <Shot
           src="/shots/django/add-room.png"
-          alt="Formulário Adicionar Sala"
-          caption="Form em branco. Identificador vira o id público (ex.: sala-1)."
+          alt="Formulário em branco para adicionar uma sala"
+          caption="Formulário em branco. O identificador vira o final do link da sala."
           tall
         />
       </Step>
 
-      <Step guide="django" id="formulario" n="9" title="Publicar o formulário Fale Conosco">
+      <Step guide="django" id="formulario" n="9" title="Ligar o formulário Fale conosco">
         <p>
-          O site pede o slug <code>{PREP_FORM.slug}</code>. Sem esse formulário
-          publicado, /contato mostra “Não foi possível carregar o formulário.”
-          Isso não é o bug da simulação — é pré-requisito do caminho comum.
+          A página Fale conosco só mostra os campos Nome, E-mail e Mensagem se
+          existir um formulário com o slug <code>{PREP_FORM.slug}</code> e a
+          caixinha Publicado marcada. Se o site disser que não conseguiu
+          carregar o formulário, este passo ainda não foi feito.
         </p>
         <DoExpect
           doItems={[
             "Em Formulários, clique em Adicionar.",
             "Nome interno: BUGBASH Fale Conosco. Slug: fale-conosco. Tipo: Contato.",
             "Marque Publicado.",
-            "Título público: Fale Conosco. Rótulo do botão: Enviar mensagem. Mensagem de sucesso: Mensagem enviada com sucesso.",
-            "Cole o JSON de campos abaixo em Campos.",
-            "SALVAR e abra /contato no site. O formulário Nome, E-mail e Mensagem precisa aparecer.",
+            "Título que o visitante vê: Fale Conosco. Texto do botão: Enviar mensagem. Mensagem de sucesso: Mensagem enviada com sucesso.",
+            "No campo Campos, apague o que estiver lá e cole o texto do quadro escuro, sem mudar aspas nem chaves.",
+            "Salve e abra a página Fale conosco. Os três campos precisam aparecer.",
           ]}
           expectItems={[
-            "GET do formulário deixa de responder “não encontrado”.",
-            "Enviar vazio mostra Informe seu nome, Informe seu e-mail e Escreva sua mensagem.",
-            "Um envio válido cai em Mensagens de contato, no passo 10.",
+            "A página deixa de dizer que o formulário não foi encontrado.",
+            "Enviar vazio pede o nome, o e-mail e a mensagem.",
+            "Uma mensagem enviada de verdade aparece no passo seguinte.",
           ]}
         />
         <pre className="overflow-x-auto rounded-xl bg-[#1e2937] p-3 text-xs text-white">{`[
@@ -426,40 +434,44 @@ export default function DjangoPage() {
 ]`}</pre>
       </Step>
 
-      <Step guide="django" id="contato" n="10" title="Ver mensagens do formulário">
+      <Step guide="django" id="contato" n="10" title="Ver as mensagens que chegaram">
+        <p>
+          Quando alguém envia o Fale conosco, a mensagem cai nesta lista. Não
+          existe botão de adicionar aqui: a mensagem nasce no site.
+        </p>
         <DoExpect
           doItems={[
-            "No site, envie uma mensagem de teste em /contato (veja o outro roteiro).",
-            "Volte aqui em Mensagens de contato.",
+            "No site, abra Fale conosco e envie uma mensagem de teste.",
+            "Volte a este painel, em Mensagens de contato.",
             "Abra a mensagem nova e confira nome, e-mail e texto.",
           ]}
           expectItems={[
-            "A mensagem aparece na lista depois do envio com sucesso.",
-            "Não há botão Adicionar — o visitante é quem cria pelo site.",
+            "A mensagem aparece na lista depois do envio.",
+            "Nome, e-mail e texto são os mesmos que você escreveu no site.",
           ]}
         />
         <Shot
           src="/shots/django/list-contact.png"
-          alt="Lista de mensagens de contato no Django"
-          caption="Caixa de entrada do Fale Conosco."
+          alt="Lista de mensagens recebidas pelo Fale conosco"
+          caption="Caixa de entrada do Fale conosco."
         />
       </Step>
 
-      <Step guide="django" id="logout" n="11" title="Encerrar sessão">
+      <Step guide="django" id="logout" n="11" title="Sair">
         <DoExpect
           doItems={[
             "No canto superior direito, clique em ENCERRAR SESSÃO.",
-            "Tente abrir /admin/ de novo.",
+            "Tente abrir o painel de novo.",
           ]}
           expectItems={[
-            "Tela Sessão encerrada, com link Acessar novamente.",
-            "Sem login, /admin/ volta para a tela de Usuário / Senha.",
+            "Aparece a tela de sessão encerrada, com um link para entrar outra vez.",
+            "Sem entrar de novo, o painel volta a pedir usuário e senha.",
           ]}
         />
         <Shot
           src="/shots/django/logout.png"
-          alt="Tela Sessão encerrada do Django"
-          caption="Logout concluído."
+          alt="Tela dizendo que a sessão foi encerrada"
+          caption="Você saiu do painel."
         />
       </Step>
     </GuideShell>
