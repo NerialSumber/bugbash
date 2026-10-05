@@ -14,12 +14,12 @@ const VIDEOS = [
   {
     src: "/videos/preparo-admin.mp4",
     title: "Como cadastrar no painel",
-    caption: "Como entrar no painel e cadastrar uma pessoa, um evento e uma sala.",
+    caption: "Como criar o seu acesso e cadastrar a sua pessoa, o seu evento e a sua sala.",
   },
   {
     src: "/videos/caminho-comum.mp4",
     title: "Caminho comum no site",
-    caption: "Home, perfil da pessoa completa, sala com Cadeiras e Day use, mensagem enviada.",
+    caption: "O vídeo mostra um exemplo. No teste, procure o seu nome na rede, na sala e na mensagem.",
   },
   {
     src: "/videos/simulacao-bug-eventos.mp4",
@@ -39,8 +39,9 @@ export default function HomePage() {
         Bug bash do site
       </h1>
       <p className="mt-4 max-w-2xl text-base leading-relaxed text-muted-foreground sm:text-lg">
-        Um teste em grupo para ver se dá para se cadastrar, colocar uma
-        informação na plataforma e encontrar essa informação no site.
+        Um teste em grupo. Cada pessoa cria o próprio acesso e cadastra a
+        própria pessoa, o próprio evento e a própria sala, para achar isso
+        no site.
       </p>
 
       <BugbashBrief />
@@ -58,13 +59,13 @@ export default function HomePage() {
       <div className="mt-8 grid gap-4 sm:grid-cols-2">
         <Card>
           <CardHeader>
-            <Badge variant="secondary">1 · cadastre a sua coisa</Badge>
+            <Badge variant="secondary">1 · cadastre o que é seu</Badge>
             <CardTitle className="font-display text-3xl text-primary">
               Painel de cadastro
             </CardTitle>
             <CardDescription>
-              Entrar, criar o seu acesso e cadastrar uma pessoa, um evento ou
-              uma sala com o seu nome.
+              Criar o seu acesso, entrar com ele e cadastrar as suas pessoas,
+              o seu evento e a sua sala. Cada título leva o seu nome.
             </CardDescription>
           </CardHeader>
           <CardContent className="flex flex-wrap gap-2">
@@ -88,8 +89,8 @@ export default function HomePage() {
               Site Prontera
             </CardTitle>
             <CardDescription>
-              Onde procurar o que você cadastrou: início, rede, eventos, salas
-              e contato. O que clicar e o que deveria aparecer.
+              Onde procurar o seu nome: rede, eventos, salas e contato. O que
+              clicar e o que deveria aparecer.
             </CardDescription>
           </CardHeader>
           <CardContent className="flex flex-wrap gap-2">
@@ -126,8 +127,8 @@ export default function HomePage() {
       <section className="no-print mt-10 space-y-4">
         <h2 className="font-display text-3xl text-primary">Vídeos</h2>
         <p className="max-w-2xl text-sm leading-relaxed text-muted-foreground">
-          Quatro gravações curtas: onde estão os roteiros, como cadastrar no
-          painel, o caminho comum no site e como registrar um problema.
+          Quatro gravações curtas: onde estão os roteiros, como cadastrar com o
+          seu nome, o caminho no site e como registrar um problema.
         </p>
         <div className="grid gap-4 sm:grid-cols-2">
           {VIDEOS.map((video) => (

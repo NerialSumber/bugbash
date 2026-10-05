@@ -1,6 +1,6 @@
 # Roteiros de Bug Bash — Espaço Prontera
 
-A página inicial explica o que é o bug bash, o objetivo e o que cada pessoa faz: cadastrar-se no painel, criar uma coisa com o próprio nome e ver se ela aparece no site.
+A página inicial explica o que é o bug bash, o objetivo e o que cada pessoa faz: criar o próprio acesso, entrar com ele, cadastrar pessoa, evento e sala com o próprio nome, achar isso no site, mudar um texto e ver se o site atualiza. No celular, o teste inclui abrir o link pelo WhatsApp. Cadastros compartilhados (página inicial, sala 1 e o formulário de contato) não são recriados por todo mundo.
 
 Dois manuais passo a passo, com prints reais das telas:
 

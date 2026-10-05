@@ -5,15 +5,7 @@ import { GuideShell } from "@/components/guide-shell";
 import { Shot } from "@/components/shot";
 import { Step } from "@/components/step";
 import { buttonVariants } from "@/components/ui/button";
-import {
-  ADMIN_URL,
-  PREP_EVENT,
-  PREP_FORM,
-  PREP_PEOPLE,
-  PREP_ROOM,
-  REPORT_FORM_URL,
-  SITE_URL,
-} from "@/lib/links";
+import { ADMIN_URL, NAME_EXAMPLE, REPORT_FORM_URL, SITE_URL } from "@/lib/links";
 
 const toc = [
   { id: "regras", label: "Antes de começar" },
@@ -28,12 +20,40 @@ const toc = [
   { id: "mobile", label: "8. No celular" },
 ];
 
+const yours = [
+  {
+    what: `Pessoa com foto, exemplo ${NAME_EXAMPLE.person}`,
+    where: `/redeprontera/${NAME_EXAMPLE.personSlug}`,
+    note: "Cartão, foto, frase e selos. Troque ana pelo seu nome.",
+  },
+  {
+    what: `Pessoa sem foto, exemplo ${NAME_EXAMPLE.plain}`,
+    where: `/redeprontera/${NAME_EXAMPLE.plainSlug}`,
+    note: "O círculo mostra as iniciais, sem imagem quebrada.",
+  },
+  {
+    what: `Pessoa escondida, exemplo ${NAME_EXAMPLE.hidden}`,
+    where: `/redeprontera/${NAME_EXAMPLE.hiddenSlug}`,
+    note: "Não entra na lista. O link direto diz que não encontrou.",
+  },
+  {
+    what: `Evento, exemplo ${NAME_EXAMPLE.event}`,
+    where: `/eventos/${NAME_EXAMPLE.eventSlug}`,
+    note: "Calendário do mês de hoje, com as datas que você escolheu.",
+  },
+  {
+    what: `Sala, exemplo ${NAME_EXAMPLE.room}`,
+    where: "/salas",
+    note: "Cartão na lista, com o adicional e o pacote do seu nome.",
+  },
+] as const;
+
 export default function SitePage() {
   return (
     <GuideShell
       kicker="Passo 2"
-      title="Veja se apareceu no site"
-      intro="Abra o site como se fosse uma visita. Procure a coisa que você cadastrou. Marque o quadradinho quando terminar cada parte. Se a tela ficar diferente do que este roteiro descreve, anote no formulário."
+      title="Veja se o seu cadastro apareceu"
+      intro="Abra o site como visita. Procure a pessoa, o evento e a sala que você criou com o seu nome. Atualize a página depois de mudar uma palavra no painel. Marque o quadradinho quando terminar cada parte. Se a tela ficar diferente do que este roteiro descreve, anote no formulário."
       toc={toc}
     >
       <BugbashBrief variant="short" />
@@ -53,10 +73,22 @@ export default function SitePage() {
             .
           </li>
           <li>
+            Os cadastros nascem no{" "}
+            <a className="text-primary underline" href="/django">
+              painel
+            </a>
+            , com o seu usuário, não com um título igual para todo mundo.
+          </li>
+          <li>
+            No celular, abra o mesmo link pelo WhatsApp, no telefone que você
+            usa no dia a dia.
+          </li>
+          <li>
             <strong>Vale anotar:</strong> página em branco, texto cortado,
             botão que não abre nada, busca que não filtra, foto que não
-            carrega, página que não desce até a parte certa, formulário que
-            aceita tudo vazio, ou uma tela cheia de texto de erro.
+            carrega, data que não aparece, página que não desce até a parte
+            certa, formulário que aceita tudo vazio, ou uma tela cheia de
+            texto de erro.
           </li>
           <li>
             <strong>Pode deixar quieto:</strong> texto de teste que já estava
@@ -89,73 +121,48 @@ export default function SitePage() {
       <section id="antes" className="mt-10 space-y-4">
         <h2 className="font-display text-3xl text-primary">O que procurar</h2>
         <p>
-          Cadastre a sua coisa no{" "}
-          <a className="text-primary underline" href="/django">
-            painel
-          </a>{" "}
-          antes de seguir. Use seu primeiro nome no título. Depois volte ao{" "}
-          <a className="text-primary underline" href={SITE_URL}>
-            site
-          </a>{" "}
-          e procure esse nome.
+          A tabela usa Ana como exemplo. Troque pelo slug que você escreveu.
+          Atualize a página se o nome não aparecer de primeira.
         </p>
+        <Callout title="O teste principal">
+          Achar no site a pessoa com foto, a pessoa sem foto, o evento e a
+          sala com o seu nome. A pessoa escondida não pode aparecer. Depois de
+          mudar uma palavra no painel, o site mostra o texto novo. Nome, foto,
+          data e frase precisam estar completos.
+        </Callout>
         <p>
-          A tabela lista exemplos que podem já estar no ar. Alguns prints
-          antigos ainda mostram a Juliana. Procure primeiro o que você
-          cadastrou. Se os exemplos estiverem na lista, vale olhar também.
+          Alguns prints antigos ainda mostram a Juliana. Procure primeiro o
+          que você cadastrou.
         </p>
         <div className="overflow-x-auto rounded-xl bg-white text-sm ring-1 ring-foreground/10">
           <table className="w-full text-left">
             <thead className="bg-muted/70 text-xs tracking-wide uppercase">
               <tr>
-                <th className="px-3 py-2">O que foi cadastrado</th>
-                <th className="px-3 py-2">Onde olhar no site</th>
+                <th className="px-3 py-2">O que você criou</th>
+                <th className="px-3 py-2">Onde olhar</th>
               </tr>
             </thead>
             <tbody className="[&_td]:px-3 [&_td]:py-2 [&_tr]:border-t">
-              {PREP_PEOPLE.map((person) => (
-                <tr key={person.slug}>
+              {yours.map((row) => (
+                <tr key={row.where + row.what}>
                   <td>
-                    {person.name}
-                    <div className="text-xs text-muted-foreground">
-                      Página Rede, no final do link: /redeprontera/{person.slug}
-                    </div>
+                    {row.what}
+                    <div className="font-mono text-xs text-muted-foreground">{row.where}</div>
                   </td>
-                  <td>{person.note}</td>
+                  <td>{row.note}</td>
                 </tr>
               ))}
-              <tr>
-                <td>
-                  {PREP_EVENT.title}
-                  <div className="text-xs text-muted-foreground">
-                    Página Eventos, de {PREP_EVENT.start} a {PREP_EVENT.end}
-                  </div>
-                </td>
-                <td>Precisa estar publicado para aparecer no calendário.</td>
-              </tr>
-              <tr>
-                <td>
-                  {PREP_ROOM.title}
-                  <div className="text-xs text-muted-foreground">Página Salas</div>
-                </td>
-                <td>Aparece para todo mundo, com um extra e um pacote.</td>
-              </tr>
-              <tr>
-                <td>Formulário Fale conosco</td>
-                <td>
-                  Publicado com o nome interno {PREP_FORM.slug}. Sem ele, a
-                  página de contato não mostra os campos.
-                </td>
-              </tr>
             </tbody>
           </table>
         </div>
-        <Callout tone="warn" title="Se a lista da Rede estiver vazia">
-          O seu cadastro ainda não chegou no site. Volte ao{" "}
+        <Callout tone="warn" title="Se o seu nome não aparecer">
+          O cadastro ainda não chegou no site, ficou como rascunho, ou a
+          caixinha Pública está desmarcada. Volte ao{" "}
           <a className="font-medium underline" href="/django">
             painel
           </a>{" "}
-          e crie uma pessoa com o seu nome. O link do painel é {ADMIN_URL}.
+          com o seu usuário. O link do painel é {ADMIN_URL}. Não procure um
+          cadastro chamado bugbash: cada pessoa usa o próprio nome.
         </Callout>
       </section>
 
@@ -176,6 +183,7 @@ export default function SitePage() {
             "O item da página atual fica destacado.",
             "Colar o link funciona igual ao clique.",
             "O topo e o final da página levam aos mesmos lugares.",
+            "Nenhuma dessas páginas fica em branco nem pede para rolar para o lado.",
           ]}
         />
       </Step>
@@ -183,8 +191,8 @@ export default function SitePage() {
       <Step guide="site" id="home" n="2" title="Olhar a página inicial">
         <p>
           A primeira página tem um texto grande no começo e bolhas ao redor.
-          Cada bolha leva a uma parte da mesma página: Sobre, Perguntas e
-          outras.
+          Ela é compartilhada: não espere ver o seu nome aqui. O seu nome está
+          na Rede, em Eventos e em Salas.
         </p>
         <Shot
           src="/shots/site/home-hero.png"
@@ -202,7 +210,7 @@ export default function SitePage() {
             "Role a página até o final. Nenhuma parte deve ficar em branco.",
           ]}
           expectItems={[
-            "Cada bolha desce até a parte correspondente.",
+            "Cada bolha desce até a parte correspondente. O texto da bolha não fica cortado.",
             "Perguntas abre as perguntas frequentes.",
             "#faq desce até as perguntas. #sobre desce até “O que é o Prontera?”.",
             "Um final que não existe não trava o site.",
@@ -219,17 +227,16 @@ export default function SitePage() {
           alt="Parte de perguntas frequentes"
           caption="Perguntas frequentes. Se #faq não chegar aqui, anote no formulário."
         />
-        <Callout tone="warn" title="Se alguém esconder uma parte no painel">
-          Atualize a página inicial. A bolha e o texto dessa parte devem sumir,
-          sem deixar um buraco estranho. No fim do teste, volte a marcar essa
-          parte como ativa.
+        <Callout tone="warn" title="Não desmarque blocos da página inicial">
+          Outras pessoas estão olhando a mesma tela. Se uma bolha já estiver
+          faltando, anote. Não desligue um bloco no painel no meio do teste.
         </Callout>
       </Step>
 
-      <Step guide="site" id="rede" n="3" title="Procurar pessoas na Rede">
+      <Step guide="site" id="rede" n="3" title="Procurar as suas pessoas na Rede">
         <p>
-          Abra Rede Prontera. A página mostra cartões de pessoas, uma busca e
-          filtros de papel, área e vínculo.
+          Abra Rede Prontera. Procure as três pessoas que você criou. A com
+          foto e a sem foto aparecem. A escondida não.
         </p>
         <Shot
           src="/shots/site/rede-lista.png"
@@ -240,17 +247,19 @@ export default function SitePage() {
         <p className="font-semibold">Lista, busca e filtros</p>
         <DoExpect
           doItems={[
-            "Procure a pessoa que você cadastrou com o seu nome. A pessoa marcada como escondida não pode aparecer.",
+            "Procure a pessoa pública com o seu nome. A escondida não pode aparecer na lista.",
             "Na busca, digite o começo desse nome. Depois apague.",
             "Busque uma palavra que não existe, como zzzz-nao-existe.",
-            "Abra Papel e escolha uma opção. Faça o mesmo em Área e em Vínculo.",
+            "Abra Papel e escolha a opção que você marcou no cadastro. Faça o mesmo em Área e em Vínculo.",
             "Junte busca e filtro, e depois limpe tudo.",
+            "Se você mudou a frase de apresentação no painel, atualize esta página e confira o texto novo.",
           ]}
           expectItems={[
-            "A pessoa pública aparece. A escondida não aparece.",
+            "A pessoa pública com foto aparece. A sem foto também. A escondida não.",
             "Uma busca sem resultado mostra a frase “Nenhuma pessoa encontrada…”, e não uma tela branca.",
             "O filtro esconde quem não combina com a opção escolhida.",
-            "Os selos de área, papel e vínculo aparecem nos cartões certos.",
+            "Os selos de área, papel e vínculo aparecem no cartão da pessoa em que você os marcou.",
+            "A frase editada no painel é a que aparece no cartão ou no perfil.",
           ]}
         />
         <Shot
@@ -262,27 +271,29 @@ export default function SitePage() {
         <p className="font-semibold">Perfil com foto</p>
         <DoExpect
           doItems={[
-            "No cartão da pessoa que você criou, clique em Ver perfil.",
-            "Confira nome, frase de apresentação, papel, área e vínculo.",
-            "Clique no ícone do Instagram.",
+            "No cartão da pessoa com foto que você criou, clique em Ver perfil.",
+            "Confira nome, foto, frase de apresentação, papel, área e vínculo.",
+            "Se tiver ícone do Instagram, clique nele.",
             "Copie o link da página e cole numa aba nova.",
           ]}
           expectItems={[
             "Abre o perfil, com um link para voltar à Rede.",
-            "A foto aparece. Se no lugar da foto surgir um texto estranho, anote.",
-            "O ícone abre o Instagram do Prontera.",
+            "A foto é a que você enviou. Se no lugar da foto surgir um texto estranho ou uma imagem quebrada, anote.",
+            "O ícone, se você colou o campo de redes, abre o Instagram.",
             "O link copiado abre o mesmo perfil de novo.",
           ]}
         />
         <Shot
           src="/shots/site/perfil-juliana.png"
           alt="Exemplo de perfil com foto e Instagram"
-          caption="Exemplo de perfil com foto. O seu deve mostrar o nome que você cadastrou."
+          caption="Exemplo de perfil com foto. O seu deve mostrar o nome e a foto que você cadastrou."
         />
 
         <p className="font-semibold">Perfil sem foto</p>
         <DoExpect
-          doItems={["Abra a pessoa que foi cadastrada sem foto."]}
+          doItems={[
+            "Abra o perfil da pessoa sem foto que você criou, a do slug sem-foto.",
+          ]}
           expectItems={[
             "O círculo mostra as iniciais do nome, sem uma imagem quebrada.",
             "A página continua inteira mesmo sem texto longo ou redes sociais.",
@@ -294,16 +305,16 @@ export default function SitePage() {
           caption="Pessoa sem foto. O círculo usa as iniciais do nome."
         />
 
-        <p className="font-semibold">Pessoa que não existe ou está escondida</p>
+        <p className="font-semibold">Pessoa escondida ou que não existe</p>
         <DoExpect
           doItems={[
+            `Cole o link da pessoa escondida: /redeprontera/${NAME_EXAMPLE.hiddenSlug}, trocando ana pelo seu nome.`,
             "No fim do link da Rede, troque o nome por nao-existe.",
-            "Abra também o link da pessoa que ficou com Pública desmarcada.",
           ]}
           expectItems={[
-            "Aparece “Pessoa não encontrada” e a frase de que o perfil não existe ou não está público.",
+            "Os dois dizem “Pessoa não encontrada” e que o perfil não existe ou não está público.",
             "O link Ver todas as pessoas volta para a lista.",
-            "Não aparece uma tela cheia de texto de erro.",
+            "Não aparece uma tela cheia de texto de erro, nem o cadastro escondido.",
           ]}
         />
         <Shot
@@ -313,11 +324,12 @@ export default function SitePage() {
         />
       </Step>
 
-      <Step guide="site" id="eventos" n="4" title="Olhar os eventos">
+      <Step guide="site" id="eventos" n="4" title="Olhar o seu evento">
         <p>
-          Abra a página Eventos. O evento de exemplo é{" "}
-          <strong>{PREP_EVENT.title}</strong>, de {PREP_EVENT.start} até{" "}
-          {PREP_EVENT.end}.
+          Abra a página Eventos. Procure o evento com o seu nome, no mês de
+          hoje. As datas são as que você preencheu no painel, de hoje até dois
+          dias à frente. Não procure um workshop com o mesmo título para todo
+          mundo.
         </p>
         <Shot
           src="/shots/site/eventos-calendario.png"
@@ -327,17 +339,22 @@ export default function SitePage() {
         <DoExpect
           doItems={[
             "Abra Eventos e espere carregar.",
-            "Se aparecer “Não foi possível carregar os eventos”, pare e anote no formulário. O evento foi publicado, mas a página não conseguiu mostrar.",
-            "Se o calendário abrir, olhe setembro e outubro nas setas e clique num dia com o workshop.",
-            "Mude para a visão de lista e busque BUGBASH.",
-            "Anote o link que abre quando você clica no evento.",
-            "Também tente o final /eventos/bugbash-workshop e um final que não existe, /eventos/nao-existe.",
+            "Se aparecer “Não foi possível carregar os eventos”, pare e anote no formulário.",
+            "Olhe o mês de hoje. Clique num dia entre o início e o fim do seu evento.",
+            "Mude para a visão de lista. Na busca, digite o seu primeiro nome.",
+            "Abra o filtro de tipo e escolha a opção que você marcou. Faça o mesmo no filtro de presencial ou online. Depois limpe.",
+            "Clique no seu evento. Veja título, datas, texto e a atividade com o seu nome.",
+            "Se você mudou o resumo no painel, atualize e confira o texto novo.",
+            "Cole /eventos/nao-existe. Depois cole /eventos/ e o slug do seu evento.",
           ]}
           expectItems={[
-            "Calendário e lista mostram o workshop entre 30/09 e 02/10.",
-            "Se a página não carregar, anote o link da página de eventos, o que você fez e que esperava ver o workshop.",
-            "Clicar no evento abre a página dele, com título e datas.",
+            "O seu evento publicado aparece no calendário e na lista, com o seu nome.",
+            "Os dias mostram a data que você cadastrou, não uma data vazia ou de outro mês.",
+            "Os filtros escondem o que não combina com a opção escolhida, e não deixam a página em branco.",
+            "Clicar no evento abre a página dele, com título, datas, texto e a atividade.",
+            "A capa, se você enviou, aparece. Sem capa, o texto é Imagem em breve.",
             "Um evento que não existe mostra “Evento não encontrado” e um link para voltar.",
+            "O link com o slug do seu evento abre a mesma página do clique no calendário. Se um abrir e o outro não, anote os dois.",
           ]}
         />
         <Shot
@@ -358,15 +375,16 @@ export default function SitePage() {
         <Shot
           src="/shots/site/evento-inexistente.png"
           alt="Aviso de evento não encontrado"
-          caption="Evento que não existe ou que ainda não foi publicado."
+          caption="Evento que não existe ou que ainda está em rascunho."
         />
       </Step>
 
-      <Step guide="site" id="salas" n="5" title="Olhar as salas">
+      <Step guide="site" id="salas" n="5" title="Olhar a sua sala">
         <p>
-          A página Salas mostra cartões. Já existe a <strong>sala 1</strong>. O
-          teste acrescenta <strong>{PREP_ROOM.title}</strong>. O site hoje não
-          tem uma página separada para cada sala: só a lista.
+          A página Salas mostra cartões. A sala 1 já estava lá: olhe, não
+          precisa ser a sua. A sua é a sala com o seu nome, o adicional e o
+          pacote que você criou. O site hoje não tem uma página separada para
+          cada sala: o teste é na lista.
         </p>
         <Shot
           src="/shots/site/salas.png"
@@ -375,16 +393,16 @@ export default function SitePage() {
         />
         <DoExpect
           doItems={[
-            "Confira a sala 1 e a sala do teste: título, descrição, capacidade, valor e horário.",
-            "Na sala do teste, clique em Adicionais e em Pacotes.",
-            "Clique em Reservar em cada sala. Veja se abre um formulário, o contato, o WhatsApp, ou se não acontece nada.",
-            "Cole um final de link que não existe, /salas/nao-existe. Faça o mesmo com /salas/sala-1.",
+            "Ache o cartão com o seu nome. Confira título, descrição, capacidade, valor e horário.",
+            "Se você mudou a descrição no painel, atualize e confira o texto novo.",
+            "Na sua sala, clique em Adicionais e em Pacotes. Os nomes precisam ser os que você criou.",
+            "Clique em Reservar.",
+            "Cole /salas/nao-existe. Faça o mesmo com /salas/ e o identificador da sua sala.",
           ]}
           expectItems={[
-            "Sem foto, aparece “Imagem em breve”, sem imagem quebrada.",
-            "A sala do teste mostra o extra e o pacote criados no painel.",
-            "A sala 1 pode não ter extras. Isso é o cadastro atual.",
-            "Reservar precisa fazer alguma coisa visível. Se só mudar a cor do texto, anote.",
+            "A foto, se você enviou, aparece. Sem foto, o texto é Imagem em breve, sem imagem quebrada.",
+            "A sua sala mostra o extra e o pacote com o seu nome. A sala 1 pode não ter os mesmos extras.",
+            "Reservar abre um próximo passo: uma conversa no WhatsApp, a página Fale conosco ou um formulário na própria página. Se não abrir nada, ou só a palavra mudar de cor, anote.",
             "Um link de sala que não existe mostra Página não encontrada, com um botão para voltar ao início.",
           ]}
         />
@@ -400,7 +418,7 @@ export default function SitePage() {
         />
       </Step>
 
-      <Step guide="site" id="contato" n="6" title="Enviar uma mensagem">
+      <Step guide="site" id="contato" n="6" title="Enviar a sua mensagem">
         <p>
           A página se chama Fale conosco. À esquerda ficam os dados do espaço.
           À direita, o formulário. Se aparecer “Não foi possível carregar o
@@ -408,7 +426,11 @@ export default function SitePage() {
           <a className="text-primary underline" href="/django">
             painel
           </a>
-          .
+          . A mensagem leva o seu primeiro nome. Depois de enviar certo, abra{" "}
+          <a className="text-primary underline" href="/django#contato">
+            Mensagens recebidas
+          </a>{" "}
+          e procure esse nome.
         </p>
         <Shot
           src="/shots/site/contato.png"
@@ -420,13 +442,15 @@ export default function SitePage() {
             "Clique em Enviar mensagem com os três campos vazios.",
             "Preencha só o nome e envie de novo.",
             "No e-mail, escreva abc e envie.",
-            "Preencha nome, um e-mail válido e uma mensagem curta. Envie.",
-            "Veja se o cartão da esquerda mostra o e-mail e o telefone cadastrados no painel.",
+            "Preencha nome, um e-mail válido e uma mensagem curta com o seu primeiro nome. Envie.",
+            "Veja se o cartão da esquerda mostra e-mail e telefone, e se o texto está inteiro.",
+            "Abra o painel, em Mensagens de contato, e procure a mensagem com o seu nome.",
           ]}
           expectItems={[
             "Vazio: os três campos ficam vermelhos e pedem nome, e-mail e mensagem.",
             "Um e-mail sem @ não passa.",
             "Envio certo: aparece “Mensagem enviada com sucesso”.",
+            "A mesma mensagem aparece no painel, com o texto que você escreveu.",
             "Se a internet falhar, aparece um pedido para tentar de novo.",
             "O menu continua igual ao das outras páginas.",
           ]}
@@ -441,8 +465,8 @@ export default function SitePage() {
       <Step guide="site" id="rotas" n="7" title="Colar estes links">
         <p>
           O começo do link é {SITE_URL}. Cole cada final da tabela depois
-          desse começo. Exemplo: {SITE_URL}/redeprontera. Este teste acha
-          páginas que o menu não mostra.
+          desse começo. Onde aparecer ana, troque pelo seu nome em minúsculas,
+          sem acento. Exemplo: {SITE_URL}/redeprontera/{NAME_EXAMPLE.personSlug}.
         </p>
         <div className="overflow-x-auto rounded-xl bg-white text-sm ring-1 ring-foreground/10">
           <table className="w-full text-left">
@@ -470,15 +494,15 @@ export default function SitePage() {
                 <td>Lista de pessoas, busca e filtros</td>
               </tr>
               <tr>
-                <td className="font-mono text-xs">/redeprontera/bugbash-pessoa-completa</td>
-                <td>Perfil da pessoa completa, se ela foi cadastrada</td>
+                <td className="font-mono text-xs">/redeprontera/{NAME_EXAMPLE.personSlug}</td>
+                <td>O perfil com foto que você criou</td>
               </tr>
               <tr>
-                <td className="font-mono text-xs">/redeprontera/bugbash-sem-foto</td>
-                <td>Perfil sem foto, só com as iniciais</td>
+                <td className="font-mono text-xs">/redeprontera/{NAME_EXAMPLE.plainSlug}</td>
+                <td>O perfil sem foto, só com as iniciais</td>
               </tr>
               <tr>
-                <td className="font-mono text-xs">/redeprontera/bugbash-oculta</td>
+                <td className="font-mono text-xs">/redeprontera/{NAME_EXAMPLE.hiddenSlug}</td>
                 <td>Pessoa não encontrada</td>
               </tr>
               <tr>
@@ -488,13 +512,13 @@ export default function SitePage() {
               <tr>
                 <td className="font-mono text-xs">/eventos</td>
                 <td>
-                  Calendário com o workshop. Se disser que não conseguiu
-                  carregar, anote
+                  Calendário do mês de hoje. Procure o seu evento. Se disser que
+                  não conseguiu carregar, anote
                 </td>
               </tr>
               <tr>
-                <td className="font-mono text-xs">/eventos/bugbash-workshop</td>
-                <td>A página do workshop. Se disser que não encontrou, anote</td>
+                <td className="font-mono text-xs">/eventos/{NAME_EXAMPLE.eventSlug}</td>
+                <td>A página do evento que você criou</td>
               </tr>
               <tr>
                 <td className="font-mono text-xs">/eventos/nao-existe</td>
@@ -502,11 +526,15 @@ export default function SitePage() {
               </tr>
               <tr>
                 <td className="font-mono text-xs">/salas</td>
-                <td>sala 1 e a sala do teste</td>
+                <td>A lista, com a sala 1 e a sala do seu nome</td>
               </tr>
               <tr>
-                <td className="font-mono text-xs">/salas/sala-1</td>
-                <td>Hoje mostra página não encontrada. Anote se isso te atrapalhou</td>
+                <td className="font-mono text-xs">/salas/{NAME_EXAMPLE.roomSlug}</td>
+                <td>
+                  Hoje a sala não tem página própria. Se cair em página não
+                  encontrada, anote só se algum botão da lista tiver prometido
+                  abrir esse link
+                </td>
               </tr>
               <tr>
                 <td className="font-mono text-xs">/contato</td>
@@ -528,21 +556,26 @@ export default function SitePage() {
 
       <Step guide="site" id="mobile" n="8" title="Repetir no celular">
         <p>
-          Abra o mesmo site no celular. Passe pelas páginas principais e veja
-          se dá para ler e clicar sem a tela sair para o lado.
+          Abra o mesmo site no celular, pelo link do WhatsApp, no telefone
+          que você usa no dia a dia. Safari no iPhone e a janela que abre
+          dentro do WhatsApp também valem. O que você cadastrou no computador
+          precisa aparecer aqui também.
         </p>
         <DoExpect
           doItems={[
+            "No WhatsApp, toque no link do site. A página inicial abre sem pedir um aplicativo especial?",
             "Na página inicial, as bolhas cabem na tela? Dá para clicar numa sem acertar a vizinha?",
-            "Na Rede, a busca e os cartões ficam um embaixo do outro?",
-            "Em Eventos, o calendário cabe na largura do celular?",
-            "Em Salas, dá para ver Reservar, Adicionais e Pacotes?",
-            "No Fale conosco, o botão Enviar aparece inteiro?",
+            "Na Rede, a busca e os cartões ficam um embaixo do outro? A pessoa com foto e a sem foto aparecem, com foto ou iniciais?",
+            "Em Eventos, o calendário cabe na largura do celular? O seu evento abre, com a data que você cadastrou?",
+            "Em Salas, a sua sala mostra Adicionais, Pacotes e Reservar? Reservar abre WhatsApp, Fale conosco ou um formulário?",
+            "No Fale conosco, o botão Enviar aparece inteiro? Dá para enviar uma mensagem com o seu nome?",
           ]}
           expectItems={[
             "A página não pede para rolar para o lado.",
             "O menu pode quebrar em duas linhas, mas os cinco links continuam clicáveis.",
-            "O texto das bolhas não fica cortado.",
+            "O texto das bolhas, dos cartões e dos botões não fica cortado.",
+            "Nome, foto, data e frase que você cadastrou aparecem iguais ao computador.",
+            "Um botão que não abre nada no celular também vale anotar, mesmo que no computador tenha aberto.",
           ]}
         />
         <div className="grid grid-cols-2 gap-3 sm:grid-cols-5">

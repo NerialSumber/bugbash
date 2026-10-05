@@ -9,37 +9,47 @@ export const SITE_ALIAS_URL = "https://prontera-eight.vercel.app";
 /** Admin que alimenta o site acima. Não usar o admin de production. */
 export const ADMIN_URL = "https://prontera-staging.up.railway.app/admin/";
 
-export const PREP_PEOPLE = [
-  {
-    name: "BUGBASH Pessoa Completa",
-    slug: "bugbash-pessoa-completa",
-    note: "Aparece para todo mundo, com foto e um Instagram.",
-  },
-  {
-    name: "BUGBASH Sem Foto",
-    slug: "bugbash-sem-foto",
-    note: "Aparece para todo mundo, sem foto. O cartão mostra as iniciais.",
-  },
-  {
-    name: "BUGBASH Oculta",
-    slug: "bugbash-oculta",
-    note: "Fica escondida. Não entra na lista.",
-  },
-] as const;
+/**
+ * Troque Ana pelo seu primeiro nome.
+ * Título pode ter acento. Slug e identificador não: minúsculas, hífen, sem espaço.
+ * João vira joao. Se a tela disser que já existe, acrescente -2.
+ */
+export const NAME_EXAMPLE = {
+  first: "Ana",
+  user: "ana.teste",
+  person: "Ana Teste",
+  personSlug: "ana-teste",
+  plain: "Ana Sem Foto",
+  plainSlug: "ana-sem-foto",
+  hidden: "Ana Oculta",
+  hiddenSlug: "ana-oculta",
+  event: "Workshop da Ana",
+  eventSlug: "ana-workshop",
+  activity: "Conversa da Ana",
+  room: "Sala da Ana",
+  roomSlug: "ana-sala",
+  addon: "Cadeiras da Ana",
+  pack: "Day use da Ana",
+} as const;
 
-export const PREP_EVENT = {
-  title: "BUGBASH Workshop",
-  slug: "bugbash-workshop",
-  start: "30/09/2026 10:00",
-  end: "02/10/2026 18:00",
-};
-
-export const PREP_ROOM = {
-  title: "BUGBASH Sala Teste",
-  id: "bugbash-sala",
-};
-
+/** Um formulário só para o site inteiro. Não crie outro se os campos já aparecerem. */
 export const PREP_FORM = {
-  name: "BUGBASH Fale Conosco",
+  name: "Fale Conosco",
   slug: "fale-conosco",
 };
+
+function pad(n: number) {
+  return String(n).padStart(2, "0");
+}
+
+/** Início hoje, término dois dias à frente, para o evento cair no calendário aberto. */
+export function eventWindow(now = new Date()) {
+  const end = new Date(now);
+  end.setDate(end.getDate() + 2);
+  const stamp = (d: Date, time: string) =>
+    `${pad(d.getDate())}/${pad(d.getMonth() + 1)}/${d.getFullYear()} ${time}`;
+  return {
+    start: stamp(now, "10:00"),
+    end: stamp(end, "18:00"),
+  };
+}
