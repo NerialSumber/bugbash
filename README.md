@@ -1,13 +1,13 @@
 # Roteiros de Bug Bash — Espaço Prontera
 
-A página inicial explica o que é o bug bash, o objetivo e o que cada pessoa faz: criar o próprio acesso, entrar com ele, cadastrar pessoa, evento e sala com o próprio nome, achar isso no site, mudar um texto e ver se o site atualiza. No celular, o teste inclui abrir o link pelo WhatsApp. Cadastros compartilhados (página inicial, sala 1 e o formulário de contato) não são recriados por todo mundo.
+A página inicial avisa que o Django é só para devs e para a organização, e que o cadastro interno ainda não existe: ele será criado depois. Quem visita segue o roteiro do site. Devs e a organização usam o painel para cadastrar pessoa, evento e sala com o próprio nome, sem criar usuário novo.
 
 Dois manuais passo a passo, com prints reais das telas:
 
-- **Painel de cadastro** — login, mapa do painel e como criar usuário, seções da Home, pessoas, eventos e salas
-- **Site Prontera** — o que clicar no site público e o que deveria acontecer
+- **Painel Django** — só devs e organização: login, pessoas (tópicos e botão), eventos e salas
+- **Site Prontera** — o que clicar no site público e o que deveria acontecer, inclusive calendário e lista de eventos carregando
 
-Vídeos em `public/videos/`: capa dos roteiros, preparo no admin, caminho comum no site e a simulação de report do bug de Eventos.
+Vídeos em `public/videos/`: capa dos roteiros, preparo no admin, caminho comum no site e um exemplo antigo de como reportar um problema. A falha da lista de eventos não é mais o resultado esperado.
 
 PDFs em `public/pdfs/`:
 
@@ -37,12 +37,12 @@ Ou conecte o repositório no [Vercel](https://vercel.com/new).
 
 | O quê | URL |
 | --- | --- |
-| Site | https://prontera-staging.vercel.app (`prontera-eight.vercel.app` redireciona para cá) |
-| Admin Django | https://prontera-staging.up.railway.app/admin/ |
+| Site | https://staging.espacoprontera.com |
+| Admin Django | https://api-staging.espacoprontera.com/admin/ |
 
 O admin de production não alimenta esse site. O roteiro Django é o passo anterior ao teste.
 
-Credenciais do admin estão no roteiro Django (são as combinadas para o Bug Bash).
+Cada dev entra no painel com o próprio usuário. O roteiro não publica uma senha.
 
 Os prints em `public/shots` foram tirados dessas URLs. Se o site mudar, atualize as imagens.
 

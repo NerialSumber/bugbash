@@ -8,7 +8,7 @@ import { cn } from "@/lib/utils";
 
 const links = [
   { href: "/", label: "Início" },
-  { href: "/django", label: "Cadastro" },
+  { href: "/django", label: "Django" },
   { href: "/site", label: "Ver no site" },
 ];
 

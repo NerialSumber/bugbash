@@ -163,6 +163,12 @@
     object-fit: contain;
   }
 
+  [data-slot="accordion-content"] {
+    display: block !important;
+    height: auto !important;
+    overflow: visible !important;
+  }
+
   .print-break {
     break-before: page;
   }

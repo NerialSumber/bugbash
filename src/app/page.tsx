@@ -3,7 +3,7 @@ import { BugbashBrief } from "@/components/bugbash-brief";
 import { buttonVariants } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { ADMIN_URL, REPORT_FORM_URL, SITE_ALIAS_URL, SITE_URL } from "@/lib/links";
+import { ADMIN_URL, REPORT_FORM_URL, SITE_URL } from "@/lib/links";
 
 const VIDEOS = [
   {
@@ -14,7 +14,7 @@ const VIDEOS = [
   {
     src: "/videos/preparo-admin.mp4",
     title: "Como cadastrar no painel",
-    caption: "Como criar o seu acesso e cadastrar a sua pessoa, o seu evento e a sua sala.",
+    caption: "Para devs e para a organização: cadastrar pessoa, evento e sala com o próprio nome.",
   },
   {
     src: "/videos/caminho-comum.mp4",
@@ -25,7 +25,7 @@ const VIDEOS = [
     src: "/videos/simulacao-bug-eventos.mp4",
     title: "Simulação: reportar o bug de Eventos",
     caption:
-      "A lista não carrega. O registro vai no formulário, com o link da página, o que foi feito, o esperado e o que aconteceu.",
+      "Exemplo antigo de como preencher o formulário. A lista de eventos hoje precisa carregar. Se não carregar, anote.",
   },
 ] as const;
 
@@ -39,9 +39,8 @@ export default function HomePage() {
         Bug bash do site
       </h1>
       <p className="mt-4 max-w-2xl text-base leading-relaxed text-muted-foreground sm:text-lg">
-        Um teste em grupo. Cada pessoa cria o próprio acesso e cadastra a
-        própria pessoa, o próprio evento e a própria sala, para achar isso
-        no site.
+        Um teste em grupo do site. O painel Django fica com devs e com a
+        organização. O cadastro interno ainda não existe.
       </p>
 
       <BugbashBrief />
@@ -59,18 +58,18 @@ export default function HomePage() {
       <div className="mt-8 grid gap-4 sm:grid-cols-2">
         <Card>
           <CardHeader>
-            <Badge variant="secondary">1 · cadastre o que é seu</Badge>
+            <Badge variant="secondary">Só devs e organização</Badge>
             <CardTitle className="font-display text-3xl text-primary">
-              Painel de cadastro
+              Painel Django
             </CardTitle>
             <CardDescription>
-              Criar o seu acesso, entrar com ele e cadastrar as suas pessoas,
-              o seu evento e a sua sala. Cada título leva o seu nome.
+              Quem já é dev ou da organização cadastra pessoa, evento e sala
+              com o próprio nome. Não é o cadastro do visitante.
             </CardDescription>
           </CardHeader>
           <CardContent className="flex flex-wrap gap-2">
             <Link href="/django" className={buttonVariants()}>
-              Abrir passo a passo do cadastro
+              Abrir o painel
             </Link>
             <a
               href="/pdfs/django.pdf"
@@ -84,7 +83,7 @@ export default function HomePage() {
 
         <Card>
           <CardHeader>
-            <Badge variant="secondary">2 · veja se apareceu</Badge>
+            <Badge variant="secondary">Todo mundo</Badge>
             <CardTitle className="font-display text-3xl text-primary">
               Site Prontera
             </CardTitle>
@@ -127,8 +126,9 @@ export default function HomePage() {
       <section className="no-print mt-10 space-y-4">
         <h2 className="font-display text-3xl text-primary">Vídeos</h2>
         <p className="max-w-2xl text-sm leading-relaxed text-muted-foreground">
-          Quatro gravações curtas: onde estão os roteiros, como cadastrar com o
-          seu nome, o caminho no site e como registrar um problema.
+          Três caminhos e um exemplo de como registrar um problema. A lista de
+          eventos precisa carregar; o vídeo antigo mostra a falha que já foi
+          corrigida.
         </p>
         <div className="grid gap-4 sm:grid-cols-2">
           {VIDEOS.map((video) => (
@@ -207,11 +207,8 @@ export default function HomePage() {
                 target="_blank"
                 rel="noreferrer"
               >
-                prontera-staging.vercel.app
+                staging.espacoprontera.com
               </a>
-              <span className="mt-1 block text-xs text-muted-foreground">
-                {SITE_ALIAS_URL} abre este mesmo endereço.
-              </span>
             </dd>
           </div>
           <div>
@@ -223,7 +220,7 @@ export default function HomePage() {
                 target="_blank"
                 rel="noreferrer"
               >
-                prontera-staging.up.railway.app/admin
+                api-staging.espacoprontera.com/admin
               </a>
               <span className="mt-1 block text-xs text-muted-foreground">
                 Use este painel. O outro ambiente não mostra as coisas neste site.

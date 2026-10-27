@@ -1,4 +1,12 @@
+"use client";
+
 import { CheckItem } from "@/components/check-item";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
 
 export function Step({
   guide,
@@ -14,18 +22,28 @@ export function Step({
   children: React.ReactNode;
 }) {
   return (
-    <section id={id} className="scroll-mt-24 border-b py-8 last:border-b-0">
-      <div className="mb-4 flex items-start gap-3">
+    <section id={id} className="scroll-mt-24 border-b last:border-b-0">
+      <div className="flex items-start gap-3">
         <CheckItem storageKey={`${guide}:${id}`} />
-        <div>
-          <p className="text-xs font-semibold tracking-widest text-primary uppercase">
-            Passo {n}
-          </p>
-          <h3 className="font-display text-2xl text-primary">{title}</h3>
-        </div>
-      </div>
-      <div className="space-y-3 text-[15px] leading-relaxed text-foreground/90">
-        {children}
+        <Accordion className="min-w-0 flex-1">
+          <AccordionItem value={id} className="border-0">
+            <AccordionTrigger className="py-4 hover:no-underline">
+              <span className="text-left">
+                <span className="block text-xs font-semibold tracking-widest text-primary uppercase">
+                  Passo {n}
+                </span>
+                <span className="font-display block text-2xl text-primary">
+                  {title}
+                </span>
+              </span>
+            </AccordionTrigger>
+            <AccordionContent>
+              <div className="space-y-4 pb-6 text-foreground/90">
+                {children}
+              </div>
+            </AccordionContent>
+          </AccordionItem>
+        </Accordion>
       </div>
     </section>
   );

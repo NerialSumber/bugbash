@@ -41,9 +41,24 @@ export function GuideShell({
         <h1 className="font-display mt-1 text-4xl text-primary sm:text-5xl">
           {title}
         </h1>
-        <p className="mt-3 max-w-2xl text-base leading-relaxed text-muted-foreground">
-          {intro}
-        </p>
+        <ul className="mt-4 max-w-2xl space-y-1.5">
+          {intro
+            .split(/(?<=[.!?])\s+/)
+            .map((line) => line.trim())
+            .filter(Boolean)
+            .map((line) => (
+              <li
+                key={line}
+                className="flex items-start gap-2.5 text-sm leading-snug text-muted-foreground"
+              >
+                <span
+                  aria-hidden
+                  className="mt-1.5 size-1.5 shrink-0 rounded-full bg-primary"
+                />
+                <span>{line}</span>
+              </li>
+            ))}
+        </ul>
         {children}
       </article>
     </div>
